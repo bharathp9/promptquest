@@ -9,13 +9,38 @@ const Music = {
     fallbackGain: null,
 
     init() {
-        this.audio = new Audio('./assets/music.mp3');
+        this.audio = new Audio();
         this.audio.loop = true;
         this.audio.volume = 0.3;
 
-        // If the MP3 can't load, fall back to a gentle tone
+        // Try multiple paths for GitHub Pages compatibility
+        const paths = [
+            './assets/music.mp3',
+            '/promptquest/assets/music.mp3',
+            'assets/music.mp3'
+        ];
+
+        const tryLoadPath = (index) => {
+            if (index >= paths.length) {
+                console.warn('Music file not found at any path, using fallback tone');
+                return;
+            }
+            this.audio.src = paths[index];
+            console.log('Trying to load music from:', paths[index]);
+        };
+
+        tryLoadPath(0);
+
+        // If the first attempt fails, try the next path
         this.audio.addEventListener('error', () => {
-            console.warn('Music file not found, using fallback tone');
+            const currentPath = this.audio.src;
+            const currentIndex = paths.findIndex(p => this.audio.src.includes(p));
+            console.warn('Failed to load from:', currentPath);
+            if (currentIndex < paths.length - 1) {
+                tryLoadPath(currentIndex + 1);
+            } else {
+                console.warn('All paths failed, using fallback tone');
+            }
         });
 
         this.toggleBtn = document.createElement('button');
