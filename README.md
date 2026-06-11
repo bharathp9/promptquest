@@ -16,7 +16,7 @@ A single-page game with 20 levels across 5 zones that teaches professional promp
 4. **Pitfall Peaks** -- Debugging: common mistakes, hallucination prevention, balance, ethics
 5. **Mastery Mountain** -- Real-world: business use cases, code generation, multi-step workflows
 
-### Prompt Gallery (New)
+### Prompt Gallery
 
 A curated library of 16 real-world prompt templates across 6 categories:
 - Business & Strategy (SWOT analysis, email tone adapter, meeting extractor, battlecard)
@@ -33,35 +33,25 @@ Each prompt can be copied to clipboard with one click. Students can study the pa
 - **Multiple Choice** -- Pick the best prompt approach
 - **Compare & Choose** -- Select the better prompt between two options
 - **Fill in the Blank** -- Complete a prompt with the right context or technique
-- **Drag & Drop** -- Arrange prompt components in the correct order
+- **Ordering** -- Arrange prompt components in the correct order
 
 ## Features
 
-- Dark theme, professional aesthetic (Linear/Stripe inspired)
+- Dark theme, professional aesthetic
 - 3-star scoring system per level
 - Progressive unlocking (complete levels to unlock the next)
 - Progress saved to localStorage
 - Hints available (reduces star rating)
 - Prompt Gallery with copy-to-clipboard
-- Completion Certificate (downloadable as image, with name, scores, and zone breakdown)
+- Completion Certificate with name entry and title based on score (use browser Print to save as PDF)
 - Progress Dashboard (view all scores, printable)
 - Responsive design (mobile + desktop)
 - Works offline after first load
 - Zero dependencies, no backend
 
-## Tech Stack
-
-- HTML5 + CSS3 + Vanilla JavaScript
-- No framework, no build step, no dependencies
-- Deployable to GitHub Pages, Vercel, or Netlify with zero config
-
 ## Quick Start
 
 ```bash
-# Clone
-git clone https://github.com/bharathp9/promptquest.git
-cd promptquest
-
 # Open in browser (no server needed)
 open index.html
 
@@ -73,18 +63,16 @@ python3 -m http.server 8000
 
 ### Option 1: GitHub Pages (Recommended, Free)
 
-1. Go to your repo on GitHub: `https://github.com/bharathp9/promptquest`
-2. Navigate to **Settings > Pages**
+1. Create a repo on GitHub and push the code
+2. Go to **Settings > Pages**
 3. Under "Source", select **Deploy from a branch**
 4. Branch: `main`, folder: `/ (root)`
 5. Click **Save**
-6. Your game will be live at: `https://bharathp9.github.io/promptquest`
-7. Share this link with students
+6. Share the link with students
 
 ### Option 2: Direct Link (If Already Hosted)
 
-If deployed to a VPS or hosting platform, simply share the URL:
-`https://promptquest.bharath.me` (or whatever subdomain you configure)
+If deployed to a VPS or hosting platform, simply share the URL.
 
 ### Option 3: Embed in Course Materials
 
@@ -100,16 +88,11 @@ Share the link with attendees before the session so they can:
 2. Browse the Prompt Gallery to see real-world examples
 3. During the workshop, use specific levels as live exercises
 4. After the workshop, continue through zones 3-5 for advanced practice
+5. Generate their completion certificate after finishing all 20 levels
 
 ## About
 
 PromptQuest was created by **Bharath Kumar** as a hands-on learning tool for SWAI (Strategic Workshops in AI) participants. The Prompt Gallery features curated real-world prompt templates organized by category -- from business strategy to code generation -- so students can study proven patterns and adapt them for their own use.
-
-## Deploy to GitHub Pages
-
-1. Push to `bharathp9/promptquest` repo
-2. Go to Settings > Pages > Source: main branch
-3. Your game will be live at `https://bharathp9.github.io/promptquest`
 
 ## License
 
