@@ -1,5 +1,5 @@
 // PromptQuest - Certificate Generator
-// Simple approach: render a printable certificate, use browser Print to PDF
+// Professional certificate design with Print-to-PDF support
 
 const Certificate = {
     playerName: '',
@@ -9,134 +9,112 @@ const Certificate = {
     title: '',
     date: '',
 
-    // Show certificate screen
     show(playerName) {
-        // If no name provided, show name entry form first
-        if (!playerName) {
-            this.showNameEntry();
-            return;
-        }
-
         this.playerName = playerName;
         this.totalStars = Game.state.totalStars;
         this.percentage = Math.round((this.totalStars / 60) * 100);
         this.grade = this.getGrade(this.percentage);
         this.title = this.getTitle(this.percentage);
-        this.date = new Date().toLocaleDateString('en-US', {
+        this.date = new Date().toLocaleDateString('en-GB', {
             year: 'numeric', month: 'long', day: 'numeric'
         });
 
         this.renderCertificate();
     },
 
-    showNameEntry() {
-        const screen = document.getElementById('screen-certificate');
-        screen.innerHTML = `
-            <div class="cert-name-entry">
-                <h2>Get Your Certificate</h2>
-                <p>Enter your name to generate your completion certificate.</p>
-                <div class="cert-form">
-                    <input type="text" id="cert-name-input" class="blank-input" placeholder="Your full name" maxlength="50" autocomplete="off">
-                    <div class="cert-form-actions">
-                        <button class="btn btn-primary" id="cert-generate-btn">Generate Certificate</button>
-                        <button class="btn btn-ghost" data-target="screen-map">Cancel</button>
-                    </div>
-                </div>
-            </div>
-        `;
-
-        const input = document.getElementById('cert-name-input');
-        const btn = document.getElementById('cert-generate-btn');
-
-        input.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') btn.click();
-        });
-
-        btn.addEventListener('click', () => {
-            const name = input.value.trim();
-            if (!name) {
-                input.focus();
-                input.style.borderColor = 'var(--accent-red)';
-                setTimeout(() => { input.style.borderColor = ''; }, 2000);
-                return;
-            }
-            this.show(name);
-        });
-
-        // Auto-focus input
-        setTimeout(() => input.focus(), 100);
-
-        Game.showScreen('screen-certificate');
-    },
-
     renderCertificate() {
         const screen = document.getElementById('screen-certificate');
         screen.innerHTML = `
-            <div class="certificate-container">
-                <div class="cert-actions">
+            <div class="certificate-page">
+                <div class="cert-actions-top">
                     <button class="btn btn-secondary" id="cert-print-btn">&#128424; Print / Save as PDF</button>
-                    <button class="btn btn-ghost" id="cert-rename-btn">&#9998; Change Name</button>
                     <button class="btn btn-ghost" data-target="screen-map">Back to Game</button>
                 </div>
 
                 <div class="certificate-print-area" id="certificate-print-area">
-                    <div class="cert-border">
-                        <div class="cert-inner">
-                            <div class="cert-header">
-                                <div class="cert-logo">PromptQuest</div>
-                                <div class="cert-subtitle">The Prompt Engineering Dojo</div>
-                            </div>
+                    <div class="cert-outer-border">
+                        <div class="cert-inner-border">
+                            <div class="cert-content">
 
-                            <div class="cert-title">Certificate of Completion</div>
+                                <div class="cert-top-accent"></div>
 
-                            <div class="cert-body">
-                                <p class="cert-presented">This is to certify that</p>
-                                <p class="cert-name">${this.escapeHtml(this.playerName)}</p>
-                                <p class="cert-earned">has earned the title of</p>
-                                <p class="cert-title-text">${this.title}</p>
-                                <p class="cert-description">by completing all 20 levels of PromptQuest, demonstrating proficiency in professional prompt engineering.</p>
-                            </div>
-
-                            <div class="cert-scores">
-                                <div class="cert-score-item">
-                                    <span class="cert-score-value">${this.totalStars}/60</span>
-                                    <span class="cert-score-label">Stars</span>
-                                </div>
-                                <div class="cert-score-item">
-                                    <span class="cert-score-value">${this.percentage}%</span>
-                                    <span class="cert-score-label">Score</span>
-                                </div>
-                                <div class="cert-score-item">
-                                    <span class="cert-score-value">${this.grade}</span>
-                                    <span class="cert-score-label">Grade</span>
-                                </div>
-                            </div>
-
-                            <div class="cert-zones">
-                                ${this.getZoneResults().map(z => `
-                                    <div class="cert-zone">
-                                        <span class="cert-zone-name">${z.icon} ${z.name}</span>
-                                        <span class="cert-zone-stars">${'★'.repeat(z.stars)}${'☆'.repeat(z.max - z.stars)}</span>
+                                <div class="cert-header">
+                                    <div class="cert-logo-row">
+                                        <span class="cert-logo-icon">&#9889;</span>
+                                        <span class="cert-logo-text">PromptQuest</span>
                                     </div>
-                                `).join('')}
-                            </div>
+                                    <div class="cert-subtitle">The Prompt Engineering Dojo</div>
+                                </div>
 
-                            <div class="cert-footer">
-                                <span class="cert-date">${this.date}</span>
-                                <span class="cert-issuer">Bharath Kumar | SWAI</span>
+                                <div class="cert-divider">
+                                    <span class="cert-divider-dot">&#11044;</span>
+                                </div>
+
+                                <div class="cert-title">Certificate of Completion</div>
+
+                                <div class="cert-body">
+                                    <p class="cert-presented">This certificate is proudly presented to</p>
+                                    <p class="cert-name">${this.escapeHtml(this.playerName)}</p>
+                                    <p class="cert-earned">for successfully completing all 20 levels and earning the title of</p>
+                                    <p class="cert-title-text">${this.title}</p>
+                                </div>
+
+                                <div class="cert-divider">
+                                    <span class="cert-divider-dot">&#11044;</span>
+                                </div>
+
+                                <div class="cert-scores-row">
+                                    <div class="cert-score-item">
+                                        <span class="cert-score-value">${this.totalStars}/60</span>
+                                        <span class="cert-score-label">Stars Earned</span>
+                                    </div>
+                                    <div class="cert-score-item">
+                                        <span class="cert-score-value">${this.percentage}%</span>
+                                        <span class="cert-score-label">Final Score</span>
+                                    </div>
+                                    <div class="cert-score-item">
+                                        <span class="cert-score-value">${this.grade}</span>
+                                        <span class="cert-score-label">Grade</span>
+                                    </div>
+                                </div>
+
+                                <div class="cert-zones-row">
+                                    ${this.getZoneResults().map(z => `
+                                        <div class="cert-zone-pill">
+                                            <span class="cert-zone-stars">${'&#9733;'.repeat(z.stars)}${'&#9734;'.repeat(z.max - z.stars)}</span>
+                                            <span class="cert-zone-name">${z.name}</span>
+                                        </div>
+                                    `).join('')}
+                                </div>
+
+                                <div class="cert-divider">
+                                    <span class="cert-divider-dot">&#11044;</span>
+                                </div>
+
+                                <div class="cert-footer-row">
+                                    <div class="cert-footer-left">
+                                        <span class="cert-date">${this.date}</span>
+                                        <span class="cert-date-label">Date of Completion</span>
+                                    </div>
+                                    <div class="cert-footer-right">
+                                        <span class="cert-issuer">Bharath Kumar</span>
+                                        <span class="cert-issuer-label">SWAI | Strategic Workshops in AI</span>
+                                    </div>
+                                </div>
+
+                                <div class="cert-bottom-accent"></div>
+
                             </div>
                         </div>
                     </div>
                 </div>
+
+                <p class="cert-disclaimer">This certificate verifies completion of PromptQuest: The Prompt Engineering Dojo, created by Bharath Kumar for SWAI.</p>
             </div>
         `;
 
         document.getElementById('cert-print-btn').addEventListener('click', () => {
             window.print();
-        });
-
-        document.getElementById('cert-rename-btn').addEventListener('click', () => {
-            this.showNameEntry();
         });
 
         Game.showScreen('screen-certificate');

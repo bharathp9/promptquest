@@ -12,7 +12,7 @@ const LEVELS = [
         choices: [
             "A command-line instruction that tells a computer what program to run",
             "A natural language input that provides context and instructions to guide an AI model's output",
-            "A programming function that sends data to an AI API",
+            "A programming function that sends data to an AI API and returns a structured response object that the developer can then parse and use in their application code",
             "A type of software that automates repetitive tasks"
         ],
         correct: 1,
@@ -122,11 +122,11 @@ const LEVELS = [
         question: "Which prompt uses role-based prompting most effectively?",
         choices: [
             "Write about operations management for new employees",
-            "You are a senior operations manager with 15 years of experience in manufacturing. Write a 500-word guide for new employees explaining the top 5 operational KPIs they should understand in their first month.",
             "Explain operations management KPIs to someone who is new at a manufacturing company",
-            "As an expert, write something about KPIs for new employees"
+            "You are a senior operations manager with 15 years of experience in manufacturing. Write a 500-word guide for new employees explaining the top 5 operational KPIs they should understand in their first month.",
+            "As an expert with deep knowledge in the field of operations management, please provide a comprehensive overview of the key performance indicators that new employees in a manufacturing environment should familiarise themselves with during their initial period of employment"
         ],
-        correct: 1,
+        correct: 2,
         explanation: "The best role-based prompt assigns a specific persona with defined expertise (senior operations manager, 15 years, manufacturing) AND combines it with clear task parameters (500 words, top 5 KPIs, first month). The role gives the AI a knowledge lens; the parameters give it structure.",
         lesson: {
             concept: "Role-based prompting tells the AI to adopt a specific persona. This changes the vocabulary, depth, and perspective of the response.",
@@ -152,11 +152,11 @@ const LEVELS = [
         question: "Which prompt will most reliably produce a correct financial analysis?",
         choices: [
             "Should I hire a part-time employee for RM 3,000/month? We currently make RM 15,000/month revenue with RM 10,000 in costs.",
-            "I need to decide whether to hire a part-time employee. Help me think through this step by step: (1) Calculate current monthly profit, (2) Subtract the new salary cost, (3) Estimate if the additional capacity could generate at least RM 3,000 in new revenue, (4) Give me a clear recommendation with reasoning.",
             "Calculate my profit after hiring someone for RM 3,000. Revenue is RM 15,000, costs are RM 10,000.",
-            "Tell me if hiring a part-time worker at RM 3,000/month is a good idea for my business."
+            "I need to decide whether to hire a part-time employee. Help me think through this step by step: (1) Calculate current monthly profit, (2) Subtract the new salary cost, (3) Estimate if the additional capacity could generate at least RM 3,000 in new revenue, (4) Give me a clear recommendation with reasoning.",
+            "Please analyse the financial viability of bringing on a part-time team member at a monthly cost of RM 3,000 given our current revenue of RM 15,000 and operating costs of RM 10,000, factoring in projected productivity gains and potential revenue impact over the next quarter"
         ],
-        correct: 1,
+        correct: 2,
         explanation: "Chain-of-thought prompting asks the AI to reason step by step before reaching a conclusion. This dramatically improves accuracy for mathematical and logical tasks. By breaking the problem into numbered steps, you reduce the chance of the AI skipping logic or making calculation errors.",
         lesson: {
             concept: "Chain-of-thought (CoT) means asking the AI to show its work. Like in math class, the process matters as much as the answer.",
@@ -179,7 +179,7 @@ const LEVELS = [
         title: "Few-Shot Learning",
         scenario: "You want the AI to classify customer feedback into categories, but it keeps using inconsistent labels. You need it to follow your exact classification system.",
         type: "fill-blank",
-        question: "Complete this prompt with two examples (few-shot) to get consistent classification:\n\n'Classify each customer feedback into one of these categories: Product Quality, Delivery, Pricing, Customer Service, Other.\n\nExample 1: \"The item arrived with a scratch on the surface.\" -> Product Quality\nExample 2: \"Delivery took 2 weeks instead of 3 days.\" -> Delivery\n\nNow classify this: \"The price increased by 30% since last month with no notice.\" -> _______________'",
+        question: "Complete this prompt with two examples (few-shot) to get consistent classification:\n\nClassify each customer feedback into one of these categories: Product Quality, Delivery, Pricing, Customer Service, Other.\n\nExample 1: \"The item arrived with a scratch on the surface.\" -> Product Quality\nExample 2: \"Delivery took 2 weeks instead of 3 days.\" -> Delivery\n\nNow classify this: \"The price increased by 30% since last month with no notice.\" -> _______________",
         placeholder: "Your answer here",
         answer: "Pricing",
         acceptable: ["pricing"],
@@ -208,11 +208,11 @@ const LEVELS = [
         question: "Which prompt will produce the most useful structured output for data extraction?",
         choices: [
             "Read these emails and tell me what they say about our product",
-            "Extract information from each email and return it as a JSON array. Each object should have: {customer_name, email_date, sentiment (positive/negative/neutral), main_topic, action_required (yes/no), action_description}. Here are the emails: ...",
             "Summarize the customer emails and give me the key points",
-            "Go through these emails and list out any complaints or praise"
+            "Extract information from each email and return it as a JSON array. Each object should have: {customer_name, email_date, sentiment (positive/negative/neutral), main_topic, action_required (yes/no), action_description}. Here are the emails: ...",
+            "Please go through all the customer emails we have received and provide me with a detailed breakdown of each one including the customer's name, when they sent it, what they thought about us, what the main issue was, and whether someone on our team needs to take action on it"
         ],
-        correct: 1,
+        correct: 2,
         explanation: "Structured output prompts specify the exact format (JSON), field names, and value constraints. This makes the output directly usable in spreadsheets, databases, or code. Always specify the format when you need to process the output programmatically.",
         lesson: {
             concept: "Structured output means telling the AI exactly what format to use: JSON, CSV, markdown table, bullet list, etc. This saves you from manually reformatting.",
@@ -270,11 +270,11 @@ const LEVELS = [
         question: "Which approach demonstrates prompt chaining for this complex task?",
         choices: [
             "Write one very long prompt that includes every detail about the market analysis",
-            "Break it into steps: First prompt asks for an outline of the report. Second prompt expands each section from the outline. Third prompt polishes the language and adds data tables.",
             "Ask the AI to 'do a thorough market analysis' and hope for the best",
-            "Write the report yourself and ask the AI only to check grammar"
+            "Break it into steps: First prompt asks for an outline of the report. Second prompt expands each section from the outline. Third prompt polishes the language and adds data tables.",
+            "I would like you to create a detailed and comprehensive market analysis report covering all relevant aspects including market size, growth trends, competitive landscape, customer segmentation, and strategic recommendations for our product launch"
         ],
-        correct: 1,
+        correct: 2,
         explanation: "Prompt chaining breaks complex tasks into sequential steps where each step builds on the previous output. This mirrors how humans tackle complex work: outline first, then draft, then refine. Each step gets the AI's full attention, producing higher quality than one massive prompt.",
         lesson: {
             concept: "Prompt chaining means breaking a big task into smaller prompts, where each prompt uses the output of the previous one. Like an assembly line.",
@@ -297,7 +297,7 @@ const LEVELS = [
         title: "System Prompts & Personas",
         scenario: "You are building a customer support chatbot. It needs to always be polite, never make up information, and escalate to a human when it is unsure.",
         type: "fill-blank",
-        question: "Write a system prompt that establishes the AI's persona and rules for a customer support chatbot:\n\n'You are a _______________ for [Company Name]. Always be _______________. Never _______________. If you are unsure about any answer, always _______________.'",
+        question: "Fill in the blanks to create a system prompt for a customer support chatbot:\n\n'You are a _______________ for [Company Name]. Always be _______________. Never _______________. If you are unsure about any answer, always _______________.'",
         placeholder: "e.g., customer support agent",
         answer: "customer support agent",
         acceptable: ["customer support agent", "customer service representative", "support specialist", "helpful customer support assistant"],
@@ -326,11 +326,11 @@ const LEVELS = [
         question: "Which prompt is best designed to handle edge cases gracefully?",
         choices: [
             "Answer the user's question about our products",
-            "You are a product assistant. Answer questions about our product catalog. If the question is unclear, ask for clarification. If the product is not in our catalog, say so honestly and suggest alternatives. If the question is outside your scope, politely explain that and suggest contacting our support team.",
             "Help users with product questions and be helpful",
-            "Answer whatever the user asks about anything"
+            "You are a product assistant. Answer questions about our product catalog. If the question is unclear, ask for clarification. If the product is not in our catalog, say so honestly and suggest alternatives. If the question is outside your scope, politely explain that and suggest contacting our support team.",
+            "Please assist our customers by answering any questions they have about our products and services, being friendly and helpful at all times while ensuring accuracy and completeness in every response you provide"
         ],
-        correct: 1,
+        correct: 2,
         explanation: "Robust prompts anticipate edge cases: unclear questions, out-of-scope requests, missing information. By explicitly defining what the AI should do in each scenario, you prevent hallucinations, irrelevant answers, and frustrated users.",
         lesson: {
             concept: "Edge cases are the unusual inputs that break your prompt. Good prompts plan for these in advance, like a safety net.",
@@ -357,12 +357,12 @@ const LEVELS = [
         type: "multiple-choice",
         question: "What is the PRIMARY problem with this prompt?",
         choices: [
-            "It does not specify the platform, tone, target audience, content length, or key message",
-            "It uses the word 'something' which is too casual",
+            "It uses the word 'something' which is too casual for professional use",
             "It should have been written in a different language",
-            "Social media posts should never be written by AI"
+            "It does not specify the platform, tone, target audience, content length, or key message",
+            "Social media posts should never be written by AI because they lack the human touch and authenticity that audiences expect from brand communications on platforms like Instagram and LinkedIn"
         ],
-        correct: 0,
+        correct: 2,
         explanation: "The prompt fails on multiple fronts: no platform specified (LinkedIn vs Twitter vs Instagram all need different styles), no tone, no audience, no length, no key message. 'Something good' is the opposite of specific. Every effective prompt needs at least: what, for whom, in what format, and in what tone.",
         lesson: {
             concept: "The number one mistake in prompt engineering: being vague. Every missing detail is a guess the AI has to make, and it might guess wrong.",
@@ -388,11 +388,11 @@ const LEVELS = [
         question: "Which prompt modification best prevents AI hallucinations?",
         choices: [
             "Add 'be more careful' to the prompt",
-            "Add 'Only use information you are confident about. If you are unsure about any fact, say \"I am not certain about this\" instead of guessing. When citing sources, include the exact URL or DOI so I can verify.'",
             "Use a shorter prompt",
-            "Tell the AI to 'try harder to be accurate'"
+            "Add 'Only use information you are confident about. If you are unsure about any fact, say \"I am not certain about this\" instead of guessing. When citing sources, include the exact URL or DOI so I can verify.'",
+            "Please make sure to be very careful and accurate when responding, and always double-check your facts before providing any information, especially when it comes to statistics, research papers, or any data that could be verified"
         ],
-        correct: 1,
+        correct: 2,
         explanation: "Hallucinations happen when the AI fills gaps with plausible-sounding but false information. To prevent them: (1) explicitly tell the AI to admit uncertainty, (2) ask for verifiable sources, (3) use phrases like 'based on established knowledge' rather than asking for specific citations the AI might invent.",
         lesson: {
             concept: "AI hallucination means the AI making things up with confidence. It is one of the biggest risks in using AI for professional work.",
@@ -448,11 +448,11 @@ const LEVELS = [
         question: "What is the correct response from a prompt engineering educator?",
         choices: [
             "Show them how jailbreak prompts work so they understand the risks",
-            "Explain that attempting to bypass AI safety is unethical and potentially illegal. Instead, teach them how to write effective prompts within the AI's intended use cases, and discuss how safety measures protect everyone.",
             "Ignore the question and move on",
-            "Give them a list of jailbreak techniques as a 'fun exercise'"
+            "Explain that attempting to bypass AI safety is unethical and potentially illegal. Instead, teach them how to write effective prompts within the AI's intended use cases, and discuss how safety measures protect everyone.",
+            "Giving participants a list of jailbreak techniques as a fun exercise can be an effective teaching strategy because it helps them understand the vulnerabilities of AI systems through hands-on exploration"
         ],
-        correct: 1,
+        correct: 2,
         explanation: "Responsible prompt engineering includes understanding and respecting AI safety boundaries. As an educator, you should redirect the conversation toward ethical use, explain why safety measures exist, and focus on the vast potential of legitimate prompt engineering techniques.",
         lesson: {
             concept: "Ethics in prompt engineering means using AI responsibly. The goal is to get better results, not to bypass safeguards.",
@@ -480,11 +480,11 @@ const LEVELS = [
         question: "Which prompt structure will produce the most actionable output for this real-world business task?",
         choices: [
             "Summarize these meeting notes",
-            "You are an executive assistant. Process these meeting notes and produce: (1) A 2-3 sentence summary per meeting, (2) A consolidated action items table with columns: Task, Owner, Deadline, Status, (3) Key decisions made across all meetings, (4) A 'needs attention' section for overdue items. Use markdown formatting.",
             "Read through all these meetings and tell me what happened",
-            "Make a summary of everything from the last 3 months of meetings"
+            "You are an executive assistant. Process these meeting notes and produce: (1) A 2-3 sentence summary per meeting, (2) A consolidated action items table with columns: Task, Owner, Deadline, Status, (3) Key decisions made across all meetings, (4) A 'needs attention' section for overdue items. Use markdown formatting.",
+            "Please review all of the meeting notes from the past three months, identify all action items and decisions, and compile everything into a comprehensive summary document that I can share with the rest of the leadership team for review and follow-up"
         ],
-        correct: 1,
+        correct: 2,
         explanation: "Real-world business prompts need to be comprehensive: they define the role (executive assistant), specify multiple output sections with exact formats, and include a prioritization mechanism (needs attention). This transforms raw meeting notes into immediately actionable business intelligence.",
         lesson: {
             concept: "Business prompts should produce output that is immediately usable. Think about what decision the output will drive, and design accordingly.",
@@ -507,7 +507,7 @@ const LEVELS = [
         title: "Code Generation Prompts",
         scenario: "You need the AI to write a Python function that validates Malaysian phone numbers. The first attempt produces code that does not handle all valid formats.",
         type: "fill-blank",
-        question: "Complete this prompt for better code generation:\n\n'Write a Python function `validate_my_phone(number: str) -> bool` that validates Malaysian phone numbers. Requirements:\n- Accept formats: +601X-XXX-XXXX, 01X-XXX-XXXX, 01XXXXXXXX\n- Return True for valid numbers, False otherwise\n- Include _______________ to test all three formats\n- Add _______________ explaining the regex pattern used'",
+        question: "Complete this prompt for better code generation:\n\nWrite a Python function `validate_my_phone(number: str) -> bool` that validates Malaysian phone numbers.\n\nRequirements:\n- Accept formats: +601X-XXX-XXXX, 01X-XXX-XXXX, 01XXXXXXXX\n- Return True for valid numbers, False otherwise\n- Include _______________ to test all three formats\n- Add _______________ explaining the regex pattern used",
         placeholder: "e.g., unit tests",
         answer: "unit tests",
         acceptable: ["unit tests", "test cases", "example tests", "assert statements", "doctests"],
@@ -536,11 +536,11 @@ const LEVELS = [
         question: "Which approach best handles this multi-step AI workflow?",
         choices: [
             "Write one massive prompt that does everything in a single response",
-            "Create a chain: Prompt 1 categorizes feedback -> Prompt 2 flags urgent items from the categorized data -> Prompt 3 generates the summary report from both outputs. Each step's output feeds the next step's input.",
             "Do everything manually and only use AI for the final report",
-            "Use a different AI model for each step"
+            "Create a chain: Prompt 1 categorizes feedback -> Prompt 2 flags urgent items from the categorized data -> Prompt 3 generates the summary report from both outputs. Each step's output feeds the next step's input.",
+            "I need you to set up an automated weekly workflow for me that handles customer feedback collection, performs sentiment analysis and topic classification, flags any urgent issues that need immediate attention, and then generates a comprehensive summary report that I can review every Monday morning"
         ],
-        correct: 1,
+        correct: 2,
         explanation: "Complex workflows benefit from prompt chaining where each step has a single, clear responsibility. This makes each step debuggable, allows human review between steps, and produces higher quality output than trying to do everything at once. Think of it as an assembly line, not a single magic prompt.",
         lesson: {
             concept: "Multi-step workflows are like a factory assembly line: each station does one job well, and the product gets better at each stage.",
@@ -563,7 +563,7 @@ const LEVELS = [
         title: "The Perfect Prompt Challenge",
         scenario: "Final exam: You need to create a prompt that helps a small business owner generate their first social media content calendar for one month (30 days). They sell handmade crafts on Instagram and Facebook.",
         type: "fill-blank",
-        question: "Write the most effective prompt for this scenario. Your prompt should include:\n\n1. A role for the AI: _______________\n2. The specific task: _______________\n3. Key context about the business: _______________\n4. Output format requirement: _______________\n5. At least one constraint: _______________",
+        question: "Fill in the blanks to write the most effective prompt for this scenario:\n\n1. A role for the AI: _______________\n2. The specific task: _______________\n3. Key context about the business: _______________\n4. Output format requirement: _______________\n5. At least one constraint: _______________",
         placeholder: "e.g., social media strategist",
         answer: "social media strategist",
         acceptable: ["social media strategist", "social media manager", "content strategist", "digital marketing specialist", "social media expert"],
