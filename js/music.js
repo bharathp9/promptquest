@@ -22,9 +22,11 @@ const Music = {
 
         const tryLoadPath = (index) => {
             if (index >= paths.length) {
+                console.warn('Music: No more paths to try');
                 return;
             }
             this.audio.src = paths[index];
+            console.log('Music: Loading from', paths[index]);
         };
 
         tryLoadPath(0);
@@ -32,9 +34,16 @@ const Music = {
         // If the first attempt fails, try the next path
         this.audio.addEventListener('error', () => {
             const currentIndex = paths.findIndex(p => this.audio.src.includes(p));
+            console.warn('Music: Failed to load from', this.audio.src);
             if (currentIndex < paths.length - 1) {
                 tryLoadPath(currentIndex + 1);
+            } else {
+                console.warn('Music: All paths exhausted, will use fallback');
             }
+        });
+
+        this.audio.addEventListener('canplay', () => {
+            console.log('Music: File loaded successfully from', this.audio.src);
         });
 
         this.toggleBtn = document.createElement('button');
