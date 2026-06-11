@@ -22,37 +22,34 @@ const Music = {
 
         const tryLoadPath = (index) => {
             if (index >= paths.length) {
-                console.warn('Music file not found at any path, using fallback tone');
                 return;
             }
             this.audio.src = paths[index];
-            console.log('Trying to load music from:', paths[index]);
         };
 
         tryLoadPath(0);
 
         // If the first attempt fails, try the next path
         this.audio.addEventListener('error', () => {
-            const currentPath = this.audio.src;
             const currentIndex = paths.findIndex(p => this.audio.src.includes(p));
-            console.warn('Failed to load from:', currentPath);
             if (currentIndex < paths.length - 1) {
                 tryLoadPath(currentIndex + 1);
-            } else {
-                console.warn('All paths failed, using fallback tone');
             }
         });
 
         this.toggleBtn = document.createElement('button');
         this.toggleBtn.className = 'btn btn-small btn-ghost';
-        this.toggleBtn.innerHTML = '&#128266; Music Off';
-        this.toggleBtn.title = 'Click to play music';
+        this.toggleBtn.innerHTML = '&#128264; Music On';
+        this.toggleBtn.title = 'Click to toggle music';
         this.toggleBtn.addEventListener('click', () => this.toggle());
 
         const headerRight = document.querySelector('.header-right');
         if (headerRight) {
             headerRight.insertBefore(this.toggleBtn, headerRight.firstChild);
         }
+
+        // Auto-play music when page loads
+        setTimeout(() => this.play(), 500);
     },
 
     toggle() {
@@ -104,7 +101,6 @@ const Music = {
             this.isPlaying = true;
             this.updateBtn();
         } catch (e) {
-            console.warn('Fallback tone failed:', e);
         }
     },
 
