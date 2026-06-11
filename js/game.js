@@ -280,20 +280,14 @@ const Game = {
                 class: 'btn-secondary',
                 onClick: () => this.startLevel(level)
             });
-        }
-
-        if (nextLevel) {
-            buttons.push({
-                label: 'Next Level',
-                class: 'btn-primary',
-                onClick: () => this.startLevel(nextLevel)
-            });
-        } else if (isCorrect) {
-            buttons.push({
-                label: 'Zone Complete!',
-                class: 'btn-primary',
-                onClick: () => this.showVictory(level.zone)
-            });
+        } else if (isLastInZone) {
+            // Last level in zone -- go to victory after short delay
+            Components.showFeedback('success', `<strong>Correct!</strong> ${stars === 3 ? 'Perfect -- 3 stars!' : 'Good job -- 2 stars (hint used)'}<br><br>${level.explanation}<br><br><em>Zone complete! Moving to summary...</em>`);
+            setTimeout(() => this.showVictory(level.zone), 2000);
+        } else {
+            // Auto-advance to next level after short delay
+            Components.showFeedback('success', `<strong>Correct!</strong> ${stars === 3 ? 'Perfect -- 3 stars!' : 'Good job -- 2 stars (hint used)'}<br><br>${level.explanation}<br><br><em>Moving to next level...</em>`);
+            setTimeout(() => this.startLevel(nextLevel), 2000);
         }
 
         buttons.push({
