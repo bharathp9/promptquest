@@ -513,7 +513,7 @@ body {
     cursor: not-allowed;
 }
 
-/* Drag and Drop */
+/* Drag and Drop (click-based ordering) */
 .drag-container {
     display: flex;
     flex-wrap: wrap;
@@ -531,23 +531,30 @@ body {
     border: 1px solid var(--accent-blue);
     border-radius: var(--radius-sm);
     padding: 10px 16px;
-    cursor: grab;
+    cursor: pointer;
     transition: var(--transition);
     font-size: 0.9rem;
     user-select: none;
 }
 
-.drag-item:hover {
+.drag-item:hover:not(.placed) {
     background: rgba(74, 158, 255, 0.1);
-}
-
-.drag-item:active {
-    cursor: grabbing;
+    transform: translateY(-1px);
 }
 
 .drag-item.placed {
-    opacity: 0.4;
+    opacity: 0.35;
     cursor: not-allowed;
+    border-color: var(--text-muted);
+}
+
+.drag-item.placed-item {
+    border-color: var(--accent-purple);
+    cursor: pointer;
+}
+
+.drag-item.placed-item:hover {
+    background: rgba(168, 85, 255, 0.1);
 }
 
 .drop-zone {
@@ -560,10 +567,15 @@ body {
     border-radius: var(--radius-sm);
     border: 2px dashed var(--text-muted);
     margin-bottom: 16px;
+    align-items: center;
 }
 
-.drop-zone .drag-item {
-    border-color: var(--accent-purple);
+.drop-zone:empty::before {
+    content: 'Click items above to add them here in the correct order...';
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    width: 100%;
+    text-align: center;
 }
 
 /* Fill in the Blank */

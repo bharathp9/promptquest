@@ -19,7 +19,6 @@ const Components = {
             btn.className = 'choice-item';
             btn.textContent = choice;
             btn.addEventListener('click', () => {
-                // Disable all buttons
                 list.querySelectorAll('.choice-item').forEach(b => {
                     b.classList.add('disabled');
                 });
@@ -88,7 +87,6 @@ const Components = {
         prompt.textContent = level.question;
         container.appendChild(prompt);
 
-        // Show prompt display with blank
         const display = document.createElement('div');
         display.className = 'prompt-display';
         display.innerHTML = level.question.replace('_______________', '<span class="blank">[your answer]</span>');
@@ -120,7 +118,6 @@ const Components = {
 
         container.appendChild(submitBtn);
 
-        // Allow Enter key
         input.addEventListener('keydown', (e) => {
             if (e.key === 'Enter') submitBtn.click();
         });
@@ -128,7 +125,7 @@ const Components = {
         return container;
     },
 
-    // Create a drag-and-drop ordering question
+    // Create an ordering question (click-based, mobile-friendly)
     createDragDrop(level, onAnswer) {
         const container = document.createElement('div');
         container.className = 'challenge-drag-drop';
@@ -139,24 +136,52 @@ const Components = {
         container.appendChild(prompt);
 
         // Shuffle items
-        const shuffled = [...level.items].sort(() => Math.random() - 0.5);
-        const placed = [];
+        const shuffled = [...level.items].map((text, origIdx) => ({ text, origIdx }));
+        // Fisher-Yates shuffle
+        for (let i = shuffled.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+        }
 
+        const placed = []; // items the user has selected, in order
+
+        // Source zone - items to pick from
         const sourceZone = document.createElement('div');
         sourceZone.className = 'drag-container';
-        sourceZone.id = 'drag-source';
 
         shuffled.forEach((item, idx) => {
             const el = document.createElement('div');
             el.className = 'drag-item';
-            el.textContent = item;
-            el.draggable = true;
-            el.dataset.index = idx;
-            el.dataset.text = item;
+            el.textContent = item.text;
+            el.dataset.idx = idx;
 
-            el.addEventListener('dragstart', (e) => {
-                e.dataTransfer.setData('text/plain', JSON.stringify({ text: item, index: idx }));
-                e.dataTransfer.effectAllowed = 'move';
+            el.addEventListener('click', () => {
+                if (el.classList.contains('placed')) return;
+
+                // Add to placed
+                placed.push(item);
+                el.classList.add('placed');
+
+                // Add to drop zone
+                const placedEl = document.createElement('div');
+                placedEl.className = 'drag-item placed-item';
+                placedEl.textContent = item.text;
+                placedEl.addEventListener('click', () => {
+                    // Remove from placed
+                    const pIdx = placed.indexOf(item);
+                    if (pIdx > -1) placed.splice(pIdx, 1);
+                    placedEl.remove();
+                    el.classList.remove('placed');
+
+                    // Re-enable check button if needed
+                    checkBtn.disabled = placed.length !== level.items.length;
+                });
+                dropZone.appendChild(placedEl);
+
+                // Enable check button when all placed
+                if (placed.length === level.items.length) {
+                    checkBtn.disabled = false;
+                }
             });
 
             sourceZone.appendChild(el);
@@ -164,51 +189,45 @@ const Components = {
 
         container.appendChild(sourceZone);
 
+        // Drop zone - where placed items appear
         const dropZone = document.createElement('div');
         dropZone.className = 'drop-zone';
-        dropZone.id = 'drag-drop';
-        dropZone.textContent = 'Drag items here in the correct order...';
-
-        dropZone.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            e.dataTransfer.dropEffect = 'move';
-        });
-
-        dropZone.addEventListener('drop', (e) => {
-            e.preventDefault();
-            const data = JSON.parse(e.dataTransfer.getData('text/plain'));
-            if (placed.includes(data.index)) return;
-
-            placed.push(data.index);
-            const el = document.createElement('div');
-            el.className = 'drag-item';
-            el.textContent = data.text;
-            el.addEventListener('click', () => {
-                // Remove from drop zone, add back to source
-                el.remove();
-                placed.splice(placed.indexOf(data.index), 1);
-                sourceZone.querySelector(`[data-index="${data.index}"]`).classList.remove('placed');
-            });
-            dropZone.appendChild(el);
-            sourceZone.querySelector(`[data-index="${data.index}"]`).classList.add('placed');
-
-            // Check if all items placed
-            if (placed.length === level.items.length) {
-                const userOrder = placed.map(i => shuffled[i].text);
-                const isCorrect = JSON.stringify(userOrder) === JSON.stringify(level.correctOrder);
-
-                setTimeout(() => onAnswer(isCorrect, userOrder), 500);
-            }
-        });
-
+        dropZone.textContent = 'Click items above to add them here in the correct order...';
         container.appendChild(dropZone);
+
+        // Check button
+        const checkBtn = document.createElement('button');
+        checkBtn.className = 'btn btn-primary';
+        checkBtn.textContent = 'Check Order';
+        checkBtn.disabled = true;
+        checkBtn.style.marginTop = '16px';
+        checkBtn.addEventListener('click', () => {
+            const userOrder = placed.map(i => i.text);
+            const isCorrect = userOrder.length === level.correctOrder.length &&
+                userOrder.every((text, idx) => text === level.correctOrder[idx]);
+
+            if (isCorrect) {
+                dropZone.querySelectorAll('.placed-item').forEach(el => {
+                    el.style.borderColor = 'var(--accent-green)';
+                });
+            } else {
+                dropZone.querySelectorAll('.placed-item').forEach(el => {
+                    el.style.borderColor = 'var(--accent-red)';
+                });
+            }
+
+            checkBtn.disabled = true;
+            setTimeout(() => onAnswer(isCorrect, userOrder), 800);
+        });
+
+        container.appendChild(checkBtn);
         return container;
     },
 
     // Show feedback
     showFeedback(type, message) {
         const fb = document.getElementById('game-feedback');
-        fb.className = type; // success, error, partial
+        fb.className = type;
         fb.innerHTML = message;
         fb.classList.remove('hidden');
     },
