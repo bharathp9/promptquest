@@ -1,6 +1,8 @@
 # PromptQuest: The Prompt Engineering Dojo
 
-An interactive web game that teaches prompt engineering to professionals. Built for SWAI (Strategic Workshops in AI) -- free, no signup, works offline.
+> Created by **Bharath Kumar** | AI Strategist | SWAI (Strategic Workshops in AI)
+
+An interactive web game that teaches prompt engineering to professionals. Built as a hands-on learning tool for SWAI workshops -- free, no signup, works offline.
 
 ## What It Is
 
