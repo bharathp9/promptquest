@@ -333,6 +333,12 @@ const Game = {
 
         // Reset button
         document.getElementById('reset-btn').addEventListener('click', () => this.resetProgress());
+
+        // Gallery button
+        document.getElementById('gallery-btn').addEventListener('click', () => {
+            Gallery.init();
+            this.showScreen('screen-gallery');
+        });
     }
 };
 
