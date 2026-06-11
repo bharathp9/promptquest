@@ -43,6 +43,7 @@ Each prompt can be copied to clipboard with one click. Students can study the pa
 - Progress saved to localStorage
 - Hints available (reduces star rating)
 - Prompt Gallery with copy-to-clipboard
+- Completion Certificate (downloadable as image, with name, scores, and zone breakdown)
 - Responsive design (mobile + desktop)
 - Works offline after first load
 - Zero dependencies, no backend

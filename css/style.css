@@ -214,6 +214,32 @@ body {
     color: var(--accent-blue);
 }
 
+/* Completion banner on welcome screen */
+.completion-banner {
+    background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(74, 158, 255, 0.1));
+    border: 1px solid var(--accent-green);
+    border-radius: var(--radius);
+    padding: 20px 24px;
+    margin-bottom: 24px;
+    text-align: center;
+}
+
+.completion-banner h3 {
+    color: var(--accent-green);
+    font-size: 1.2rem;
+    margin-bottom: 8px;
+}
+
+.completion-banner p {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    margin-bottom: 12px;
+}
+
+.completion-banner .btn {
+    margin-top: 8px;
+}
+
 #world-map {
     display: flex;
     flex-direction: column;
@@ -732,7 +758,180 @@ body {
     }
 }
 
-/* ===== Prompt Gallery ===== */
+/* ===== Certificate Screen ===== */
+.certificate-container {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 20px 0;
+}
+
+.certificate-actions-top {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.certificate-frame {
+    background: var(--bg-card);
+    border: 2px solid var(--accent-blue);
+    border-radius: var(--radius);
+    padding: 4px;
+    margin-bottom: 20px;
+}
+
+.certificate-border {
+    border: 1px solid var(--accent-purple);
+    border-radius: calc(var(--radius) - 2px);
+    padding: 40px;
+    background: linear-gradient(135deg, rgba(74, 158, 255, 0.03), rgba(168, 85, 247, 0.03));
+}
+
+.certificate-inner {
+    text-align: center;
+}
+
+.cert-header {
+    margin-bottom: 20px;
+}
+
+.cert-logo {
+    font-size: 1.8rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.cert-subtitle {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.cert-title {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 24px;
+    letter-spacing: 1px;
+}
+
+.cert-body {
+    margin-bottom: 24px;
+}
+
+.cert-presented {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    margin-bottom: 8px;
+}
+
+.cert-name {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--accent-blue);
+    margin-bottom: 12px;
+}
+
+.cert-description {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+.cert-stats {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin: 24px 0;
+    padding: 16px;
+    background: var(--bg-secondary);
+    border-radius: var(--radius-sm);
+}
+
+.cert-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.cert-stat-value {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--accent-blue);
+}
+
+.cert-stat-label {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-top: 2px;
+}
+
+.cert-zones {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    margin: 20px 0;
+}
+
+.cert-zone {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 8px 14px;
+    background: var(--bg-secondary);
+    border-radius: var(--radius-sm);
+    min-width: 100px;
+}
+
+.cert-zone-name {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-bottom: 2px;
+}
+
+.cert-zone-stars {
+    color: var(--accent-orange);
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+}
+
+.cert-footer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 24px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border-color);
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.certificate-actions-bottom {
+    text-align: center;
+}
+
+/* Certificate responsive */
+@media (max-width: 640px) {
+    .certificate-border {
+        padding: 24px 16px;
+    }
+
+    .cert-name {
+        font-size: 1.4rem;
+    }
+
+    .cert-stats {
+        gap: 20px;
+    }
+
+    .cert-footer {
+        flex-direction: column;
+        gap: 8px;
+        text-align: center;
+    }
+}
 .gallery-header {
     margin-bottom: 24px;
 }

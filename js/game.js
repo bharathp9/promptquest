@@ -78,6 +78,30 @@ const Game = {
         const map = document.getElementById('world-map');
         map.innerHTML = '';
 
+        // Check if all levels completed - show completion banner
+        const allCompleted = ZONES.every(z => {
+            const lvls = LEVELS.filter(l => l.zone === z.id);
+            return lvls.every(l => this.state.progress[l.id]?.completed);
+        });
+
+        const banner = document.getElementById('completion-banner');
+        if (allCompleted && this.state.levelsCompleted === 20) {
+            const totalStars = this.state.totalStars;
+            const percentage = Math.round((totalStars / 60) * 100);
+            banner.classList.remove('hidden');
+            banner.innerHTML = `
+                <h3>All 20 Levels Completed!</h3>
+                <p>Final Score: ${totalStars}/60 stars (${percentage}%)</p>
+                <button class="btn btn-primary" id="banner-cert-btn">Get Your Certificate</button>
+            `;
+            document.getElementById('banner-cert-btn').addEventListener('click', () => {
+                const name = prompt('Enter your name for the certificate:') || 'Prompt Engineer';
+                Certificate.show(name);
+            });
+        } else {
+            banner.classList.add('hidden');
+        }
+
         ZONES.forEach(zone => {
             const zoneLevels = LEVELS.filter(l => l.zone === zone.id);
             const completedCount = zoneLevels.filter(l => this.state.progress[l.id]?.completed).length;
@@ -304,6 +328,29 @@ const Game = {
         document.getElementById('victory-message').textContent =
             `You completed ${zone.name}! ${zoneStars}/${maxStars} stars earned.`;
 
+        // Check if all zones completed
+        const allCompleted = ZONES.every(z => {
+            const lvls = LEVELS.filter(l => l.zone === z.id);
+            return lvls.every(l => this.state.progress[l.id]?.completed);
+        });
+
+        if (allCompleted) {
+            document.getElementById('victory-message').innerHTML += '<br><br><strong>Congratulations! You have mastered all 5 zones!</strong>';
+            const certBtn = document.createElement('button');
+            certBtn.className = 'btn btn-primary';
+            certBtn.textContent = 'Get Your Certificate';
+            certBtn.style.marginTop = '16px';
+            certBtn.addEventListener('click', () => {
+                const name = prompt('Enter your name for the certificate:') || 'Prompt Engineer';
+                Certificate.show(name);
+            });
+            document.querySelector('.victory-content').appendChild(certBtn);
+
+            // Update the continue button text
+            const continueBtn = document.querySelector('.victory-content .btn-primary[data-target="screen-map"]');
+            if (continueBtn) continueBtn.textContent = 'Back to Map';
+        }
+
         this.showScreen('screen-victory');
     },
 
@@ -338,6 +385,21 @@ const Game = {
         document.getElementById('gallery-btn').addEventListener('click', () => {
             Gallery.init();
             this.showScreen('screen-gallery');
+        });
+
+        // Certificate button
+        document.getElementById('cert-btn').addEventListener('click', () => {
+            const allCompleted = ZONES.every(z => {
+                const lvls = LEVELS.filter(l => l.zone === z.id);
+                return lvls.every(l => Game.state.progress[l.id]?.completed);
+            });
+            if (!allCompleted) {
+                const remaining = LEVELS.filter(l => !Game.state.progress[l.id]?.completed).length;
+                alert(`Complete all levels first! You have ${remaining} level(s) remaining.`);
+                return;
+            }
+            const name = prompt('Enter your name for the certificate:') || 'Prompt Engineer';
+            Certificate.show(name);
         });
     }
 };
