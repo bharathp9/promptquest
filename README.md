@@ -97,15 +97,9 @@ Share the link with attendees before the session so they can:
 3. During the workshop, use specific levels as live exercises
 4. After the workshop, continue through zones 3-5 for advanced practice
 
-## What Was Learned from prompts.chat
+## About
 
-This project was inspired by [prompts.chat](https://github.com/f/prompts.chat) (163K+ GitHub stars), the world's largest open-source prompt library. Key features adopted:
-
-- **Prompt Gallery with categories** -- Browse prompts by use case (business, writing, coding, etc.)
-- **Copy-to-clipboard** -- One-click copy for any prompt template
-- **Tag system** -- Each prompt tagged for easy discovery
-- **Real-world focus** -- All prompts are practical, production-ready templates
-- **Variable placeholders** -- Prompts use `[PLACEHOLDER]` notation for easy customization
+PromptQuest was created by **Bharath Kumar** as a hands-on learning tool for SWAI (Strategic Workshops in AI) participants. The Prompt Gallery features curated real-world prompt templates organized by category -- from business strategy to code generation -- so students can study proven patterns and adapt them for their own use.
 
 ## Deploy to GitHub Pages
 
