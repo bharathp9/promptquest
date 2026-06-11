@@ -73,6 +73,11 @@ const Music = {
         try {
             this.ctx = new (window.AudioContext || window.webkitAudioContext)();
 
+            // Resume context if suspended (browser autoplay policy)
+            if (this.ctx.state === 'suspended') {
+                this.ctx.resume();
+            }
+
             // Master volume
             this.master = this.ctx.createGain();
             this.master.gain.value = 0.15;
