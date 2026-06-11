@@ -82,14 +82,10 @@ const Components = {
         const container = document.createElement('div');
         container.className = 'challenge-fill-blank';
 
-        const prompt = document.createElement('p');
-        prompt.className = 'challenge-prompt';
-        prompt.textContent = level.question;
-        container.appendChild(prompt);
-
+        // Show the question with blank highlighted
         const display = document.createElement('div');
         display.className = 'prompt-display';
-        display.innerHTML = level.question.replace('_______________', '<span class="blank">[your answer]</span>');
+        display.innerHTML = level.question.replace(/_______________/g, '<span class="blank">[your answer]</span>');
         container.appendChild(display);
 
         const input = document.createElement('input');
