@@ -1,22 +1,81 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PromptQuest: The Prompt Engineering Dojo</title>
-  <meta name="description" content="Learn prompt engineering through an interactive game. Master techniques like role-based prompting, chain-of-thought, few-shot learning, and more.">
-  <meta property="og:title" content="PromptQuest: The Prompt Engineering Dojo">
-  <meta property="og:description" content="An interactive game to master prompt engineering. 20 levels across 5 zones.">
-  <meta property="og:type" content="website">
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎯</text></svg>">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="PromptQuest: The Prompt Engineering Dojo - An interactive game that teaches prompt engineering to professionals">
+    <meta property="og:title" content="PromptQuest: The Prompt Engineering Dojo">
+    <meta property="og:description" content="Master prompt engineering through 20 interactive levels across 5 zones. Free, no signup, works offline.">
+    <meta property="og:type" content="website">
+    <title>PromptQuest: The Prompt Engineering Dojo</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <div id="app">
-    <!-- Game renders here -->
-  </div>
+    <div id="app">
+        <!-- Header -->
+        <header id="header">
+            <div class="header-left">
+                <h1 class="logo">PromptQuest</h1>
+                <span class="tagline">The Prompt Engineering Dojo</span>
+            </div>
+            <div class="header-right">
+                <div id="player-stats">
+                    <span class="stat"><span class="stat-icon">&#9733;</span> <span id="total-stars">0</span>/60</span>
+                    <span class="stat"><span class="stat-icon">&#9989;</span> <span id="levels-completed">0</span>/20</span>
+                </div>
+                <button id="reset-btn" class="btn btn-small btn-ghost" title="Reset Progress">Reset</button>
+            </div>
+        </header>
 
-  <script src="js/levels.js"></script>
-  <script src="js/game.js"></script>
+        <!-- Main Content Area -->
+        <main id="main">
+            <!-- Screen: World Map -->
+            <section id="screen-map" class="screen active">
+                <div class="map-intro">
+                    <h2>Welcome, Prompt Engineer</h2>
+                    <p>Your journey through the art of crafting perfect prompts begins here. Complete all 5 zones to master prompt engineering.</p>
+                </div>
+                <div id="world-map"></div>
+            </section>
+
+            <!-- Screen: Level Select -->
+            <section id="screen-levels" class="screen">
+                <button class="back-btn" data-target="screen-map">&larr; Back to Map</button>
+                <div id="zone-header"></div>
+                <div id="level-grid"></div>
+            </section>
+
+            <!-- Screen: Game Play -->
+            <section id="screen-game" class="screen">
+                <div id="game-header">
+                    <button class="back-btn" data-target="screen-levels">&larr; Back</button>
+                    <div id="game-title"></div>
+                    <div id="game-stars"></div>
+                </div>
+                <div id="game-body"></div>
+                <div id="game-feedback" class="hidden"></div>
+                <div id="game-actions"></div>
+            </section>
+
+            <!-- Screen: Victory -->
+            <section id="screen-victory" class="screen">
+                <div class="victory-content">
+                    <h2>Zone Complete!</h2>
+                    <div id="victory-stars"></div>
+                    <div id="victory-message"></div>
+                    <button class="btn btn-primary" data-target="screen-map">Continue Journey</button>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer id="footer">
+            <p>PromptQuest &mdash; Free &amp; Open Source &middot; Built for SWAI &middot; <a href="https://github.com/bharathp9/promptquest" target="_blank">GitHub</a></p>
+        </footer>
+    </div>
+
+    <script src="js/levels.js"></script>
+    <script src="js/components.js"></script>
+    <script src="js/game.js"></script>
 </body>
 </html>

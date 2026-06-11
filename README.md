@@ -1,132 +1,65 @@
 # PromptQuest: The Prompt Engineering Dojo
 
-An interactive web game that teaches prompt engineering to professionals. Inspired by [prompts.chat/kids](https://prompts.chat/kids) and based on ["The Interactive Book of Prompting"](https://prompts.chat/book) by Fatih Kadir Akın.
+An interactive web game that teaches prompt engineering to professionals. Built for SWAI (Strategic Workshops in AI) -- free, no signup, works offline.
 
 ## What It Is
 
-20 levels across 5 themed zones, each teaching a specific prompt engineering concept through realistic professional scenarios:
+A single-page game with 20 levels across 5 zones that teaches professional prompt engineering through interactive challenges:
 
-| Zone | Theme | Techniques |
-|------|-------|------------|
-| Foundation Valley | Basics | Clarity, context, prompt anatomy |
-| Technique Tower | Core methods | Role-based, chain-of-thought, few-shot, structured output |
-| Refinement Ridge | Advanced | Iterative refinement, prompt chaining, system prompts |
-| Pitfall Peaks | Debugging | Common mistakes, hallucinations, over/under-prompting |
-| Mastery Mountain | Real-world | Business use cases, code generation, complex workflows |
+1. **Foundation Valley** -- Basics: clarity, specificity, context, anatomy of a prompt
+2. **Technique Tower** -- Core methods: role-based, chain-of-thought, few-shot, structured output
+3. **Refinement Ridge** -- Advanced: iterative refinement, chaining, system prompts, edge cases
+4. **Pitfall Peaks** -- Debugging: common mistakes, hallucination prevention, balance, ethics
+5. **Mastery Mountain** -- Real-world: business use cases, code generation, multi-step workflows
 
 ## Challenge Types
 
-- **Multiple Choice** -- Pick the best answer
-- **Compare Prompts** -- Choose the better prompt and explain why
-- **Drag & Drop** -- Arrange prompt components in the right order
-- **Fill in the Blanks** -- Complete a prompt template
-- **Spot the Bug** -- Find what's wrong with a given prompt
+- **Multiple Choice** -- Pick the best prompt approach
+- **Compare & Choose** -- Select the better prompt between two options
+- **Fill in the Blank** -- Complete a prompt with the right context or technique
+- **Drag & Drop** -- Arrange prompt components in the correct order
+
+## Features
+
+- Dark theme, professional aesthetic (Linear/Stripe inspired)
+- 3-star scoring system per level
+- Progressive unlocking (complete levels to unlock the next)
+- Progress saved to localStorage
+- Hints available (reduces star rating)
+- Responsive design (mobile + desktop)
+- Works offline after first load
+- Zero dependencies, no backend
 
 ## Tech Stack
 
-- Pure HTML5 + CSS3 + Vanilla JavaScript
-- Zero dependencies, zero build step
-- Progress saved to localStorage
-- Fully responsive (mobile + desktop)
-- Dark theme, professional aesthetic
+- HTML5 + CSS3 + Vanilla JavaScript
+- No framework, no build step, no dependencies
+- Deployable to GitHub Pages, Vercel, or Netlify with zero config
 
-## Deployment
-
-### Option 1: GitHub Pages (Recommended)
-
-1. Create a new GitHub repo (e.g., `yourusername/promptquest`)
-2. Push this code to the repo
-3. Go to Settings > Pages > Source: `main` branch, `/` root
-4. Your game will be live at `https://yourusername.github.io/promptquest`
+## Quick Start
 
 ```bash
-git init
-git add .
-git commit -m "Initial commit: PromptQuest game"
-git remote add origin https://github.com/YOUR_USERNAME/promptquest.git
-git push -u origin main
-```
+# Clone
+git clone https://github.com/bharathp9/promptquest.git
+cd promptquest
 
-### Option 2: Vercel
+# Open in browser (no server needed)
+open index.html
 
-1. Push code to GitHub
-2. Go to [vercel.com](https://vercel.com) and import the repo
-3. No build settings needed (static site)
-4. Deployed instantly with a custom URL
-
-### Option 3: Netlify
-
-1. Push code to GitHub
-2. Go to [netlify.com](https://netlify.com) and import the repo
-3. Build command: (leave empty)
-4. Publish directory: (leave empty, or `/`)
-5. Deployed instantly
-
-### Option 4: Any Static Host
-
-Just upload the files to any web server. No backend needed.
-
-```bash
-# Local preview
+# Or serve locally
 python3 -m http.server 8000
-# Open http://localhost:8000
 ```
 
-## Project Structure
+## Deploy to GitHub Pages
 
-```
-promptquest/
-├── index.html          # Main HTML file
-├── css/
-│   └── style.css       # All styles (dark theme, responsive)
-├── js/
-│   ├── levels.js       # 20 level definitions with scenarios
-│   └── game.js         # Game engine (state, navigation, scoring)
-├── assets/             # (empty -- all graphics are CSS/SVG)
-├── README.md           # This file
-└── LICENSE             # CC0 1.0 Universal
-```
+1. Push to `bharathp9/promptquest` repo
+2. Go to Settings > Pages > Source: main branch
+3. Your game will be live at `https://bharathp9.github.io/promptquest`
 
-## Customization
+## For SWAI
 
-### Adding/Editing Levels
-
-Edit `js/levels.js`. Each level has this structure:
-
-```javascript
-{
-  id: "1-1",              // Zone-Level format
-  zone: 1,                // Zone number (1-5)
-  zoneName: "Foundation Valley",
-  title: "What is a Prompt?",
-  scenario: "Real-world scenario text...",
-  challenge: "multiple_choice",  // or: compare_prompts, drag_drop, fill_blanks, spot_bug
-  question: "The question text...",
-  // ... challenge-specific fields
-  explanation: "Shown after answering...",
-  hint: "Hint text..."
-}
-```
-
-### Changing the Theme
-
-Edit CSS variables in `css/style.css`:
-
-```css
-:root {
-  --bg-primary: #0a0a0f;
-  --accent-blue: #4a9eff;
-  --accent-purple: #a855f7;
-  /* ... */
-}
-```
-
-## Credits
-
-- Based on ["The Interactive Book of Prompting"](https://prompts.chat/book) by Fatih Kadir Akın
-- Inspired by [Promi's Prompt School](https://prompts.chat/kids)
-- Licensed under [CC0 1.0 Universal](https://creativecommons.org/publicdomain/zero/1.0/) (Public Domain)
+This project is designed as a hands-on learning tool for SWAI (Strategic Workshops in AI) participants. Share the link with attendees so they can practice prompt engineering before, during, or after the workshop.
 
 ## License
 
-This project is released under [CC0 1.0 Universal (Public Domain Dedication)](https://creativecommons.org/publicdomain/zero/1.0/). You can copy, modify, distribute, and perform the work, even for commercial purposes, all without asking permission.
+CC0 -- Free for any use, no attribution required.
