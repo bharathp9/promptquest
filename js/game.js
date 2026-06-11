@@ -330,15 +330,18 @@ const Game = {
 
         if (allCompleted) {
             document.getElementById('victory-message').innerHTML += '<br><br><strong>Congratulations! You have mastered all 5 zones!</strong>';
-            const certBtn = document.createElement('button');
-            certBtn.className = 'btn btn-primary';
-            certBtn.textContent = 'Get Your Certificate';
-            certBtn.style.marginTop = '16px';
-            certBtn.addEventListener('click', () => {
-                const name = prompt('Enter your name for the certificate:') || 'Prompt Engineer';
-                Certificate.show(name);
-            });
-            document.querySelector('.victory-content').appendChild(certBtn);
+            // Only add certificate button if not already present
+            if (!document.querySelector('#victory-cert-btn')) {
+                const certBtn = document.createElement('button');
+                certBtn.id = 'victory-cert-btn';
+                certBtn.className = 'btn btn-primary';
+                certBtn.textContent = 'Get Your Certificate';
+                certBtn.style.marginTop = '16px';
+                certBtn.addEventListener('click', () => {
+                    Certificate.show();
+                });
+                document.querySelector('.victory-content').appendChild(certBtn);
+            }
 
             // Update the continue button text
             const continueBtn = document.querySelector('.victory-content .btn-primary[data-target="screen-map"]');
