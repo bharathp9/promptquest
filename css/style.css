@@ -995,20 +995,92 @@ body {
     .certificate-print-area {
         border-radius: 0;
         page-break-inside: avoid;
+        break-inside: avoid;
     }
 
     .cert-border {
-        border-color: #4a9eff !important;
+        border: 2px solid #4a9eff !important;
+        border-radius: 8px;
+        padding: 3px;
     }
 
     .cert-inner {
-        border-color: #a855f7 !important;
+        border: 1px solid #a855f7 !important;
+        border-radius: 6px;
+        padding: 20px 24px !important;
         background: white !important;
+    }
+
+    .cert-header {
+        margin-bottom: 10px;
     }
 
     .cert-logo {
         -webkit-text-fill-color: #4a9eff !important;
         color: #4a9eff !important;
+        font-size: 1.2rem !important;
+    }
+
+    .cert-subtitle {
+        font-size: 0.75rem !important;
+    }
+
+    .cert-title {
+        font-size: 1.2rem !important;
+        margin-bottom: 12px;
+    }
+
+    .cert-body {
+        margin-bottom: 12px;
+    }
+
+    .cert-presented,
+    .cert-earned {
+        font-size: 0.8rem !important;
+    }
+
+    .cert-name {
+        font-size: 1.3rem !important;
+        margin-bottom: 6px;
+    }
+
+    .cert-title-text {
+        font-size: 1rem !important;
+        margin-bottom: 6px;
+    }
+
+    .cert-description {
+        font-size: 0.75rem !important;
+    }
+
+    .cert-scores {
+        gap: 24px;
+        margin: 12px 0;
+        padding: 10px;
+    }
+
+    .cert-score-value {
+        font-size: 1.1rem !important;
+    }
+
+    .cert-zones {
+        gap: 8px;
+        margin: 10px 0;
+    }
+
+    .cert-zone {
+        padding: 4px 10px;
+        min-width: 80px;
+    }
+
+    .cert-zone-name {
+        font-size: 0.65rem !important;
+    }
+
+    .cert-footer {
+        margin-top: 12px;
+        padding-top: 8px;
+        font-size: 0.7rem !important;
     }
 
     .cert-title,
@@ -1043,7 +1115,7 @@ body {
 
     @page {
         size: A4 landscape;
-        margin: 10mm;
+        margin: 8mm;
     }
 }
 

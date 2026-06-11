@@ -319,8 +319,6 @@ const Game = {
         const maxStars = zoneLevels.length * 3;
 
         document.getElementById('victory-stars').textContent = '★'.repeat(zoneStars) + '☆'.repeat(maxStars - zoneStars);
-        document.getElementById('victory-message').textContent =
-            `You completed ${zone.name}! ${zoneStars}/${maxStars} stars earned.`;
 
         // Check if all zones completed
         const allCompleted = ZONES.every(z => {
@@ -328,25 +326,32 @@ const Game = {
             return lvls.every(l => this.state.progress[l.id]?.completed);
         });
 
+        // Build victory message fresh each time (not appending)
+        let msg = `You completed ${zone.name}! ${zoneStars}/${maxStars} stars earned.`;
         if (allCompleted) {
-            document.getElementById('victory-message').innerHTML += '<br><br><strong>Congratulations! You have mastered all 5 zones!</strong>';
-            // Only add certificate button if not already present
-            if (!document.querySelector('#victory-cert-btn')) {
-                const certBtn = document.createElement('button');
-                certBtn.id = 'victory-cert-btn';
-                certBtn.className = 'btn btn-primary';
-                certBtn.textContent = 'Get Your Certificate';
-                certBtn.style.marginTop = '16px';
-                certBtn.addEventListener('click', () => {
-                    Certificate.show();
-                });
-                document.querySelector('.victory-content').appendChild(certBtn);
-            }
-
-            // Update the continue button text
-            const continueBtn = document.querySelector('.victory-content .btn-primary[data-target="screen-map"]');
-            if (continueBtn) continueBtn.textContent = 'Back to Map';
+            msg += '<br><br><strong>Congratulations! You have mastered all 5 zones!</strong>';
         }
+        document.getElementById('victory-message').innerHTML = msg;
+
+        // Remove any previously added certificate button
+        const existingCertBtn = document.querySelector('#victory-cert-btn');
+        if (existingCertBtn) existingCertBtn.remove();
+
+        if (allCompleted) {
+            const certBtn = document.createElement('button');
+            certBtn.id = 'victory-cert-btn';
+            certBtn.className = 'btn btn-primary';
+            certBtn.textContent = 'Get Your Certificate';
+            certBtn.style.marginTop = '16px';
+            certBtn.addEventListener('click', () => {
+                Certificate.show();
+            });
+            document.querySelector('.victory-content').appendChild(certBtn);
+        }
+
+        // Update the continue button text
+        const continueBtn = document.querySelector('.victory-content .btn-primary[data-target="screen-map"]');
+        if (continueBtn) continueBtn.textContent = allCompleted ? 'Back to Map' : 'Continue Journey';
 
         this.showScreen('screen-victory');
     },

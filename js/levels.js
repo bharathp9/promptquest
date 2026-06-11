@@ -37,7 +37,7 @@ const LEVELS = [
         scenario: "You need the AI to write an email to a client. Without context, the email sounds robotic and does not match your company's tone.",
         type: "fill-blank",
         question: "Fill in the blank to create a prompt that includes proper context:\n\n'Write a follow-up email to a client who missed our product demo yesterday. The tone should be _______________. Mention that we have next Tuesday and Thursday available, and include a link to our booking page.'",
-        placeholder: "e.g., professional but warm, understanding rather than pushy",
+        placeholder: "e.g., professional but warm",
         answer: "professional but warm, understanding rather than pushy",
         acceptable: ["professional but warm", "friendly and understanding", "warm and professional", "understanding and helpful", "polite and professional"],
         explanation: "Adding tone and style context transforms generic output into something that matches your brand voice. The more context you provide about the situation, audience, and desired tone, the better the result."
@@ -90,7 +90,7 @@ const LEVELS = [
         scenario: "You want the AI to classify customer feedback into categories, but it keeps using inconsistent labels. You need it to follow your exact classification system.",
         type: "fill-blank",
         question: "Complete this prompt with two examples (few-shot) to get consistent classification:\n\n'Classify each customer feedback into one of these categories: Product Quality, Delivery, Pricing, Customer Service, Other.\n\nExample 1: \"The item arrived with a scratch on the surface.\" → Product Quality\nExample 2: \"Delivery took 2 weeks instead of 3 days.\" → Delivery\n\nNow classify this: \"The price increased by 30% since last month with no notice.\" → _______________'",
-        placeholder: "Pricing",
+        placeholder: "Your answer here",
         answer: "Pricing",
         acceptable: ["pricing"],
         explanation: "Few-shot examples show the AI exactly what you want. By providing 2-3 input-output examples before the actual task, you establish the pattern, format, and categories. This is especially powerful for classification, formatting, and style-matching tasks."
@@ -148,7 +148,7 @@ const LEVELS = [
         scenario: "You are building a customer support chatbot. It needs to always be polite, never make up information, and escalate to a human when it is unsure.",
         type: "fill-blank",
         question: "Write a system prompt that establishes the AI's persona and rules for a customer support chatbot:\n\n'You are a _______________ for [Company Name]. Always be _______________. Never _______________. If you are unsure about any answer, always _______________.'",
-        placeholder: "customer support agent... polite and helpful... make up information... escalate to a human agent",
+        placeholder: "e.g., customer support agent",
         answer: "customer support agent",
         acceptable: ["customer support agent", "customer service representative", "support specialist", "helpful customer support assistant"],
         explanation: "System prompts set the persistent behavior and persona of an AI. They define who the AI is, how it should behave, and what its boundaries are. Good system prompts include: the role, behavioral rules, prohibitions, and fallback instructions."
@@ -253,7 +253,7 @@ const LEVELS = [
         scenario: "You need the AI to write a Python function that validates Malaysian phone numbers. The first attempt produces code that does not handle all valid formats.",
         type: "fill-blank",
         question: "Complete this prompt for better code generation:\n\n'Write a Python function `validate_my_phone(number: str) -> bool` that validates Malaysian phone numbers. Requirements:\n- Accept formats: +601X-XXX-XXXX, 01X-XXX-XXXX, 01XXXXXXXX\n- Return True for valid numbers, False otherwise\n- Include _______________ to test all three formats\n- Add _______________ explaining the regex pattern used'",
-        placeholder: "unit tests... comments",
+        placeholder: "e.g., unit tests",
         answer: "unit tests",
         acceptable: ["unit tests", "test cases", "example tests", "assert statements", "doctests"],
         explanation: "Code generation prompts produce better results when they specify: input/output types, exact requirements, edge cases to handle, test cases expected, and documentation requirements. The more precise your specification, the less debugging you will need."
@@ -279,7 +279,7 @@ const LEVELS = [
         scenario: "Final exam: You need to create a prompt that helps a small business owner generate their first social media content calendar for one month (30 days). They sell handmade crafts on Instagram and Facebook.",
         type: "fill-blank",
         question: "Write the most effective prompt for this scenario. Your prompt should include:\n\n1. A role for the AI: _______________\n2. The specific task: _______________\n3. Key context about the business: _______________\n4. Output format requirement: _______________\n5. At least one constraint: _______________",
-        placeholder: "You are a social media strategist... Create a 30-day content calendar... Handmade crafts business on Instagram and Facebook... Table format with columns for date, platform, content type, caption, hashtags... Include a mix of product showcases, behind-the-scenes, and engagement posts",
+        placeholder: "e.g., social media strategist",
         answer: "social media strategist",
         acceptable: ["social media strategist", "social media manager", "content strategist", "digital marketing specialist", "social media expert"],
         explanation: "The perfect prompt combines all techniques learned: role assignment, specific task definition, rich context, structured output format, and clear constraints. In real business scenarios, this level of prompt craftsmanship saves hours of manual work and produces consistent, high-quality results."
