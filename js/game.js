@@ -10,7 +10,8 @@ const Game = {
         totalStars: 0,
         levelsCompleted: 0,
         learnedLevels: new Set(), // track which levels the user has studied
-        quizHistory: [] // track answers for summary: [{ levelId, correct, concept }]
+        quizHistory: [], // track answers for summary: [{ levelId, correct, concept }]
+        playerName: '' // locked name for certificate -- reset to change
     },
 
     init() {
@@ -18,6 +19,7 @@ const Game = {
         this.renderMap();
         this.updateStats();
         this.bindEvents();
+        this._checkNameOnStart();
     },
 
     // Load progress from localStorage
@@ -31,6 +33,7 @@ const Game = {
                 this.state.levelsCompleted = data.levelsCompleted || 0;
                 this.state.learnedLevels = new Set(data.learnedLevels || []);
                 this.state.quizHistory = data.quizHistory || [];
+                this.state.playerName = data.playerName || '';
             }
         } catch (e) {
             console.warn('Could not load progress:', e);
@@ -45,7 +48,8 @@ const Game = {
                 totalStars: this.state.totalStars,
                 levelsCompleted: this.state.levelsCompleted,
                 learnedLevels: Array.from(this.state.learnedLevels),
-                quizHistory: this.state.quizHistory
+                quizHistory: this.state.quizHistory,
+                playerName: this.state.playerName
             }));
         } catch (e) {
             console.warn('Could not save progress:', e);
@@ -60,6 +64,7 @@ const Game = {
             this.state.levelsCompleted = 0;
             this.state.learnedLevels = new Set();
             this.state.quizHistory = [];
+            this.state.playerName = '';
             localStorage.removeItem('promptquest_progress');
             this.updateStats();
             this.renderMap();
@@ -103,8 +108,13 @@ const Game = {
                 <button class="btn btn-primary" id="banner-cert-btn">Get Your Certificate</button>
             `;
             document.getElementById('banner-cert-btn').addEventListener('click', () => {
-                const name = prompt('Enter your name for the certificate:') || 'Prompt Engineer';
-                Certificate.show(name);
+                if (!Game.state.playerName) {
+                    Game._promptForName(() => {
+                        Certificate.show(Game.state.playerName);
+                    });
+                } else {
+                    Certificate.show(Game.state.playerName);
+                }
             });
         } else {
             banner.classList.add('hidden');
@@ -477,6 +487,12 @@ const Game = {
                     onClick: () => this.showLearn(level)
                 });
             }
+            // Show answer and allow moving on
+            buttons.push({
+                label: 'Show Answer & Continue →',
+                class: 'btn-ghost',
+                onClick: () => this._showAnswerAndContinue(level, isLastInZone, nextLevel)
+            });
         } else if (isLastInZone) {
             Components.showFeedback('success',
                 `<strong>Correct!</strong> ${stars === 3 ? 'Perfect -- 3 stars!' : 'Good job -- 2 stars (hint used)'}<br><br>${level.explanation}${summaryHtml}<br><br><em>Zone complete! Moving to summary...</em>`
@@ -496,6 +512,46 @@ const Game = {
         });
 
         Components.createActions(buttons);
+    },
+
+    // Show the correct answer and allow user to continue
+    _showAnswerAndContinue(level, isLastInZone, nextLevel) {
+        const body = document.getElementById('game-body');
+
+        // Build answer display
+        let answerHtml = `
+            <div class="show-answer-panel">
+                <h4>📖 The Correct Answer</h4>
+                <p class="show-answer-text">${level.explanation}</p>
+                ${level.lesson ? `<p class="show-answer-concept"><strong>Key concept:</strong> ${level.lesson.concept}</p>` : ''}
+            </div>
+        `;
+
+        body.insertAdjacentHTML('beforeend', answerHtml);
+
+        // Replace action buttons with just Continue
+        const actions = document.getElementById('game-actions');
+        actions.innerHTML = '';
+
+        if (isLastInZone) {
+            const nextBtn = document.createElement('button');
+            nextBtn.className = 'btn btn-primary';
+            nextBtn.textContent = 'See Zone Result →';
+            nextBtn.addEventListener('click', () => this.showVictory(level.zone));
+            actions.appendChild(nextBtn);
+        } else {
+            const nextBtn = document.createElement('button');
+            nextBtn.className = 'btn btn-primary';
+            nextBtn.textContent = 'Next Level →';
+            nextBtn.addEventListener('click', () => this.startLevel(nextLevel));
+            actions.appendChild(nextBtn);
+        }
+
+        const backBtn = document.createElement('button');
+        backBtn.className = 'btn btn-ghost';
+        backBtn.textContent = 'Back to Levels';
+        backBtn.addEventListener('click', () => this.showZoneLevels(level.zone));
+        actions.appendChild(backBtn);
     },
 
     // Recalculate total stars and completed levels
@@ -554,7 +610,13 @@ const Game = {
             certBtn.textContent = 'Get Your Certificate';
             certBtn.style.marginTop = '16px';
             certBtn.addEventListener('click', () => {
-                Certificate.show();
+                if (!Game.state.playerName) {
+                    Game._promptForName(() => {
+                        Certificate.show(Game.state.playerName);
+                    });
+                } else {
+                    Certificate.show(Game.state.playerName);
+                }
             });
             document.querySelector('.victory-content').appendChild(certBtn);
         }
@@ -621,9 +683,33 @@ const Game = {
                 alert(`Complete all levels first! You have ${remaining} level(s) remaining.`);
                 return;
             }
-            const name = prompt('Enter your name for the certificate:') || 'Prompt Engineer';
-            Certificate.show(name);
+            // If name not set, prompt for it first
+            if (!Game.state.playerName) {
+                Game._promptForName(() => {
+                    Certificate.show(Game.state.playerName);
+                });
+            } else {
+                Certificate.show(Game.state.playerName);
+            }
         });
+    },
+
+    // Check if we need to ask for name on start (if they have progress but no name)
+    _checkNameOnStart() {
+        // If they have completed levels but no name stored, prompt for name
+        if (this.state.levelsCompleted > 0 && !this.state.playerName) {
+            this._promptForName();
+        }
+    },
+
+    // Prompt user for their name (non-blocking callback version)
+    _promptForName(callback) {
+        const name = prompt('Enter your name for the certificate:');
+        if (name && name.trim()) {
+            this.state.playerName = name.trim();
+            this.saveProgress();
+            if (callback) callback();
+        }
     }
 };
 

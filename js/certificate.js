@@ -11,12 +11,7 @@ const Certificate = {
 
     // Show certificate screen
     show(playerName) {
-        // If no name provided, show name entry form first
-        if (!playerName) {
-            this.showNameEntry();
-            return;
-        }
-
+        // Always use the stored name -- never prompt here
         this.playerName = playerName;
         this.totalStars = Game.state.totalStars;
         this.percentage = Math.round((this.totalStars / 60) * 100);
@@ -29,53 +24,12 @@ const Certificate = {
         this.renderCertificate();
     },
 
-    showNameEntry() {
-        const screen = document.getElementById('screen-certificate');
-        screen.innerHTML = `
-            <div class="cert-name-entry">
-                <h2>Get Your Certificate</h2>
-                <p>Enter your name to generate your completion certificate.</p>
-                <div class="cert-form">
-                    <input type="text" id="cert-name-input" class="blank-input" placeholder="Your full name" maxlength="50" autocomplete="off">
-                    <div class="cert-form-actions">
-                        <button class="btn btn-primary" id="cert-generate-btn">Generate Certificate</button>
-                        <button class="btn btn-ghost" data-target="screen-map">Cancel</button>
-                    </div>
-                </div>
-            </div>
-        `;
-
-        const input = document.getElementById('cert-name-input');
-        const btn = document.getElementById('cert-generate-btn');
-
-        input.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') btn.click();
-        });
-
-        btn.addEventListener('click', () => {
-            const name = input.value.trim();
-            if (!name) {
-                input.focus();
-                input.style.borderColor = 'var(--accent-red)';
-                setTimeout(() => { input.style.borderColor = ''; }, 2000);
-                return;
-            }
-            this.show(name);
-        });
-
-        // Auto-focus input
-        setTimeout(() => input.focus(), 100);
-
-        Game.showScreen('screen-certificate');
-    },
-
     renderCertificate() {
         const screen = document.getElementById('screen-certificate');
         screen.innerHTML = `
             <div class="certificate-container">
                 <div class="cert-actions">
                     <button class="btn btn-secondary" id="cert-print-btn">&#128424; Print / Save as PDF</button>
-                    <button class="btn btn-ghost" id="cert-rename-btn">&#9998; Change Name</button>
                     <button class="btn btn-ghost" data-target="screen-map">Back to Game</button>
                 </div>
 
@@ -133,10 +87,6 @@ const Certificate = {
 
         document.getElementById('cert-print-btn').addEventListener('click', () => {
             window.print();
-        });
-
-        document.getElementById('cert-rename-btn').addEventListener('click', () => {
-            this.showNameEntry();
         });
 
         Game.showScreen('screen-certificate');

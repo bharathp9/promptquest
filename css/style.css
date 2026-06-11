@@ -1600,3 +1600,34 @@ body {
         gap: 8px;
     }
 }
+
+/* Show Answer panel */
+.show-answer-panel {
+    background: rgba(245, 158, 11, 0.08);
+    border: 1px solid rgba(245, 158, 11, 0.3);
+    border-radius: var(--radius-sm);
+    padding: 20px;
+    margin-top: 16px;
+    animation: fadeIn 0.3s ease;
+}
+
+.show-answer-panel h4 {
+    color: var(--accent-orange);
+    font-size: 1rem;
+    margin-bottom: 10px;
+}
+
+.show-answer-text {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.7;
+    margin-bottom: 10px;
+}
+
+.show-answer-concept {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    line-height: 1.5;
+    padding-top: 8px;
+    border-top: 1px solid var(--border-color);
+}

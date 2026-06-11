@@ -106,9 +106,8 @@ const Components = {
             const userAnswer = input.value.trim().toLowerCase();
             if (!userAnswer) return;
 
-            const isCorrect = level.acceptable
-                ? level.acceptable.some(a => userAnswer.includes(a.toLowerCase()))
-                : userAnswer.includes(level.answer.toLowerCase());
+            // Smart matching: check multiple strategies
+            const isCorrect = this._checkFillBlankAnswer(userAnswer, level);
 
             input.classList.add(isCorrect ? 'correct' : 'incorrect');
             submitBtn.disabled = true;
@@ -257,5 +256,47 @@ const Components = {
             container.appendChild(btn);
         });
         return container;
+    },
+
+    // Smart fill-blank answer checking
+    // Strategy 1: exact acceptable match (user input contains the acceptable phrase)
+    // Strategy 2: keyword overlap (user shares 2+ meaningful keywords with any acceptable answer)
+    // Strategy 3: answer field match (user input contains the main answer keyword)
+    _checkFillBlankAnswer(userAnswer, level) {
+        const stopWords = new Set(['a', 'an', 'the', 'is', 'are', 'was', 'were', 'be', 'been', 'being', 'have', 'has', 'had', 'do', 'does', 'did', 'will', 'would', 'could', 'should', 'may', 'might', 'shall', 'can', 'to', 'of', 'in', 'for', 'on', 'with', 'at', 'by', 'from', 'as', 'into', 'through', 'during', 'before', 'after', 'above', 'below', 'between', 'out', 'off', 'over', 'under', 'again', 'further', 'then', 'once', 'and', 'but', 'or', 'nor', 'not', 'so', 'yet', 'both', 'either', 'neither', 'each', 'every', 'all', 'any', 'few', 'more', 'most', 'other', 'some', 'such', 'no', 'only', 'own', 'same', 'than', 'too', 'very', 'just', 'because', 'if', 'when', 'where', 'how', 'what', 'which', 'who', 'whom', 'this', 'that', 'these', 'those', 'i', 'me', 'my', 'we', 'our', 'you', 'your', 'he', 'him', 'his', 'she', 'her', 'it', 'its', 'they', 'them', 'their', 'e', 'g']);
+
+        // Extract meaningful keywords from user input
+        const userWords = userAnswer.split(/[\s,]+/).filter(w => w.length > 1 && !stopWords.has(w));
+
+        // Strategy 1: Check if user input contains any acceptable phrase (original logic, reversed)
+        if (level.acceptable) {
+            for (const acceptable of level.acceptable) {
+                const accLower = acceptable.toLowerCase();
+                // User input contains the full acceptable phrase
+                if (userAnswer.includes(accLower)) return true;
+                // Acceptable phrase contains the user's full input (user typed a short form)
+                if (accLower.includes(userAnswer) && userAnswer.length > 3) return true;
+
+                // Strategy 2: Keyword overlap
+                const accWords = accLower.split(/[\s,]+/).filter(w => w.length > 1 && !stopWords.has(w));
+                const overlap = userWords.filter(w => accWords.some(aw => aw.includes(w) || w.includes(aw)));
+                // If user shares 2+ keywords with an acceptable answer, or 1 keyword if the acceptable is short
+                const threshold = accWords.length <= 2 ? 1 : 2;
+                if (overlap.length >= threshold) return true;
+            }
+        }
+
+        // Strategy 3: Check against main answer field
+        if (level.answer) {
+            const answerLower = level.answer.toLowerCase();
+            if (userAnswer.includes(answerLower)) return true;
+            if (answerLower.includes(userAnswer) && userAnswer.length > 3) return true;
+
+            const answerWords = answerLower.split(/[\s,]+/).filter(w => w.length > 1 && !stopWords.has(w));
+            const overlap = userWords.filter(w => answerWords.some(aw => aw.includes(w) || w.includes(aw)));
+            if (overlap.length >= 2) return true;
+        }
+
+        return false;
     }
 };
