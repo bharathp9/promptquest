@@ -1,14 +1,16 @@
 // PromptQuest - Game Engine
-// State management, navigation, scoring, and progression
+// State management, navigation, scoring, progression, learn mode, and quiz summary
 
 const Game = {
     state: {
         currentScreen: 'screen-map',
         currentZone: null,
         currentLevel: null,
-        progress: {}, // { "1-1": { completed: true, stars: 3 }, ... }
+        progress: {}, // { "1-1": { completed: true, stars: 3, learned: true }, ... }
         totalStars: 0,
-        levelsCompleted: 0
+        levelsCompleted: 0,
+        learnedLevels: new Set(), // track which levels the user has studied
+        quizHistory: [] // track answers for summary: [{ levelId, correct, concept }]
     },
 
     init() {
@@ -27,6 +29,8 @@ const Game = {
                 this.state.progress = data.progress || {};
                 this.state.totalStars = data.totalStars || 0;
                 this.state.levelsCompleted = data.levelsCompleted || 0;
+                this.state.learnedLevels = new Set(data.learnedLevels || []);
+                this.state.quizHistory = data.quizHistory || [];
             }
         } catch (e) {
             console.warn('Could not load progress:', e);
@@ -39,7 +43,9 @@ const Game = {
             localStorage.setItem('promptquest_progress', JSON.stringify({
                 progress: this.state.progress,
                 totalStars: this.state.totalStars,
-                levelsCompleted: this.state.levelsCompleted
+                levelsCompleted: this.state.levelsCompleted,
+                learnedLevels: Array.from(this.state.learnedLevels),
+                quizHistory: this.state.quizHistory
             }));
         } catch (e) {
             console.warn('Could not save progress:', e);
@@ -52,6 +58,8 @@ const Game = {
             this.state.progress = {};
             this.state.totalStars = 0;
             this.state.levelsCompleted = 0;
+            this.state.learnedLevels = new Set();
+            this.state.quizHistory = [];
             localStorage.removeItem('promptquest_progress');
             this.updateStats();
             this.renderMap();
@@ -155,6 +163,7 @@ const Game = {
             const isUnlocked = !prevLevel || this.state.progress[prevLevel.id]?.completed;
             const progress = this.state.progress[level.id];
             const isCompleted = progress?.completed;
+            const hasLearned = this.state.learnedLevels.has(level.id);
 
             const card = document.createElement('div');
             card.className = `level-card ${isCompleted ? 'completed' : ''} ${!isUnlocked ? 'locked' : ''}`;
@@ -166,10 +175,11 @@ const Game = {
                 <div class="level-number">${level.number}</div>
                 <div class="level-title">${level.title}</div>
                 <div class="level-stars">${isCompleted ? stars : (!isUnlocked ? '🔒' : '☆☆☆')}</div>
+                ${hasLearned && !isCompleted ? '<div class="learned-badge">📖 Studied</div>' : ''}
             `;
 
             if (isUnlocked) {
-                card.addEventListener('click', () => this.startLevel(level));
+                card.addEventListener('click', () => this.showLevelMenu(level));
             }
 
             grid.appendChild(card);
@@ -178,7 +188,151 @@ const Game = {
         this.showScreen('screen-levels');
     },
 
-    // Start a level
+    // Show level menu (Learn or Quiz)
+    showLevelMenu(level) {
+        this.state.currentLevel = level;
+        const hasLearned = this.state.learnedLevels.has(level.id);
+        const progress = this.state.progress[level.id];
+        const isCompleted = progress?.completed;
+
+        document.getElementById('game-title').textContent = `Level ${level.zone}-${level.number}: ${level.title}`;
+        document.getElementById('game-stars').textContent = '';
+
+        const body = document.getElementById('game-body');
+        body.innerHTML = '';
+
+        // Level menu card
+        const menu = document.createElement('div');
+        menu.className = 'level-menu';
+
+        let statusHtml = '';
+        if (isCompleted) {
+            const stars = '★'.repeat(progress.stars) + '☆'.repeat(3 - progress.stars);
+            statusHtml = `<div class="level-status completed">Completed: ${stars}</div>`;
+        } else if (hasLearned) {
+            statusHtml = `<div class="level-status studied">You have studied this lesson</div>`;
+        } else {
+            statusHtml = `<div class="level-status new">New -- start by learning the concept</div>`;
+        }
+
+        menu.innerHTML = `
+            <div class="level-menu-header">
+                <h3>${level.title}</h3>
+                <p class="level-type">${this._formatType(level.type)}</p>
+                ${statusHtml}
+            </div>
+            <div class="level-menu-actions">
+                <button class="btn btn-secondary btn-learn" id="menu-learn-btn">
+                    📖 ${hasLearned ? 'Review Lesson' : 'Learn First'}
+                </button>
+                <button class="btn btn-primary btn-quiz" id="menu-quiz-btn">
+                    ⚡ ${isCompleted ? 'Retake Quiz' : 'Take Quiz'}
+                </button>
+            </div>
+            ${!hasLearned ? '<p class="menu-tip">Tip: Study the lesson first to get a better score.</p>' : ''}
+        `;
+
+        body.appendChild(menu);
+
+        document.getElementById('menu-learn-btn').addEventListener('click', () => {
+            this.showLearn(level);
+        });
+
+        document.getElementById('menu-quiz-btn').addEventListener('click', () => {
+            this.startLevel(level);
+        });
+
+        this.showScreen('screen-game');
+    },
+
+    // Show learn screen for a level
+    showLearn(level) {
+        this.state.currentLevel = level;
+        this.state.learnedLevels.add(level.id);
+        this.saveProgress();
+
+        document.getElementById('game-title').textContent = `Learn: ${level.title}`;
+        document.getElementById('game-stars').textContent = '';
+
+        const body = document.getElementById('game-body');
+        body.innerHTML = '';
+
+        const lesson = level.lesson;
+        if (!lesson) {
+            body.innerHTML = '<p>No lesson content available for this level.</p>';
+            this.showScreen('screen-game');
+            return;
+        }
+
+        // Concept card
+        const conceptCard = document.createElement('div');
+        conceptCard.className = 'learn-concept';
+        conceptCard.innerHTML = `
+            <h3>💡 Key Concept</h3>
+            <p>${lesson.concept}</p>
+        `;
+        body.appendChild(conceptCard);
+
+        // Key points
+        const pointsCard = document.createElement('div');
+        pointsCard.className = 'learn-points';
+        pointsCard.innerHTML = `
+            <h3>📌 What to Remember</h3>
+            <ul>
+                ${lesson.keyPoints.map(p => `<li>${p}</li>`).join('')}
+            </ul>
+        `;
+        body.appendChild(pointsCard);
+
+        // Example comparison
+        const exampleCard = document.createElement('div');
+        exampleCard.className = 'learn-example';
+        exampleCard.innerHTML = `
+            <h3>📝 Example</h3>
+            <div class="example-comparison">
+                <div class="example-bad">
+                    <span class="example-label">❌ Weak Prompt</span>
+                    <code>${lesson.example.bad}</code>
+                </div>
+                <div class="example-good">
+                    <span class="example-label">✅ Strong Prompt</span>
+                    <code>${lesson.example.good}</code>
+                </div>
+            </div>
+            <p class="example-why"><strong>Why it works:</strong> ${lesson.example.why}</p>
+        `;
+        body.appendChild(exampleCard);
+
+        // Common mistake
+        const mistakeCard = document.createElement('div');
+        mistakeCard.className = 'learn-mistake';
+        mistakeCard.innerHTML = `
+            <h3>⚠️ Common Mistake</h3>
+            <p>${lesson.commonMistake}</p>
+        `;
+        body.appendChild(mistakeCard);
+
+        // Action buttons
+        const actions = document.createElement('div');
+        actions.className = 'learn-actions';
+        actions.innerHTML = `
+            <button class="btn btn-secondary" id="learn-back-btn">← Back</button>
+            <button class="btn btn-primary" id="learn-quiz-btn">Take the Quiz →</button>
+        `;
+        body.appendChild(actions);
+
+        document.getElementById('learn-back-btn').addEventListener('click', () => {
+            this.showZoneLevels(level.zone);
+        });
+
+        document.getElementById('learn-quiz-btn').addEventListener('click', () => {
+            this.startLevel(level);
+        });
+
+        this.showScreen('screen-game');
+    },
+
+    // Start a level (quiz mode)
     startLevel(level) {
         this.state.currentLevel = level;
         Components.hideFeedback();
@@ -243,13 +397,18 @@ const Game = {
 
         if (isCorrect) {
             stars = hasHint ? 2 : 3;
-            Components.showFeedback('success',
-                `<strong>Correct!</strong> ${stars === 3 ? 'Perfect -- 3 stars!' : 'Good job -- 2 stars (hint used)'}<br><br>${level.explanation}`
-            );
-        } else {
-            Components.showFeedback('error',
-                `<strong>Not quite.</strong><br><br>${level.explanation}`
-            );
+        }
+
+        // Track quiz history for summary
+        this.state.quizHistory.push({
+            levelId: level.id,
+            correct: isCorrect,
+            concept: level.lesson ? level.lesson.concept : level.title,
+            explanation: level.explanation
+        });
+        // Keep only last 50 entries
+        if (this.state.quizHistory.length > 50) {
+            this.state.quizHistory = this.state.quizHistory.slice(-50);
         }
 
         // Update progress
@@ -266,12 +425,43 @@ const Game = {
         this.saveProgress();
         this.updateStats();
 
-        // Show action buttons
+        // Build feedback with learning summary
+        this._showAnswerFeedback(level, isCorrect, stars, hasHint);
+    },
+
+    // Show answer feedback with learning summary
+    _showAnswerFeedback(level, isCorrect, stars, hasHint) {
         const zoneLevels = LEVELS.filter(l => l.zone === level.zone);
         const currentIndex = zoneLevels.findIndex(l => l.id === level.id);
         const nextLevel = zoneLevels[currentIndex + 1];
         const isLastInZone = currentIndex === zoneLevels.length - 1;
 
+        // Build the summary panel
+        let summaryHtml = '';
+        if (level.lesson) {
+            summaryHtml = `
+                <div class="answer-summary">
+                    <h4>📚 What You ${isCorrect ? 'Got Right' : 'Should Know'}</h4>
+                    <p class="summary-concept">${level.lesson.concept}</p>
+                    <div class="summary-points">
+                        ${level.lesson.keyPoints.slice(0, 2).map(p => `<span class="summary-point">• ${p}</span>`).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        if (isCorrect) {
+            const starText = stars === 3 ? 'Perfect -- 3 stars!' : 'Good job -- 2 stars (hint used)';
+            Components.showFeedback('success',
+                `<strong>Correct!</strong> ${starText}<br><br>${level.explanation}${summaryHtml}`
+            );
+        } else {
+            Components.showFeedback('error',
+                `<strong>Not quite.</strong><br><br>${level.explanation}${summaryHtml}`
+            );
+        }
+
+        // Show action buttons
         const buttons = [];
 
         if (!isCorrect) {
@@ -280,14 +470,23 @@ const Game = {
                 class: 'btn-secondary',
                 onClick: () => this.startLevel(level)
             });
+            if (level.lesson) {
+                buttons.push({
+                    label: '📖 Review Lesson',
+                    class: 'btn-ghost',
+                    onClick: () => this.showLearn(level)
+                });
+            }
         } else if (isLastInZone) {
-            // Last level in zone -- go to victory after short delay
-            Components.showFeedback('success', `<strong>Correct!</strong> ${stars === 3 ? 'Perfect -- 3 stars!' : 'Good job -- 2 stars (hint used)'}<br><br>${level.explanation}<br><br><em>Zone complete! Moving to summary...</em>`);
-            setTimeout(() => this.showVictory(level.zone), 2000);
+            Components.showFeedback('success',
+                `<strong>Correct!</strong> ${stars === 3 ? 'Perfect -- 3 stars!' : 'Good job -- 2 stars (hint used)'}<br><br>${level.explanation}${summaryHtml}<br><br><em>Zone complete! Moving to summary...</em>`
+            );
+            setTimeout(() => this.showVictory(level.zone), 3000);
         } else {
-            // Auto-advance to next level after short delay
-            Components.showFeedback('success', `<strong>Correct!</strong> ${stars === 3 ? 'Perfect -- 3 stars!' : 'Good job -- 2 stars (hint used)'}<br><br>${level.explanation}<br><br><em>Moving to next level...</em>`);
-            setTimeout(() => this.startLevel(nextLevel), 2000);
+            Components.showFeedback('success',
+                `<strong>Correct!</strong> ${stars === 3 ? 'Perfect -- 3 stars!' : 'Good job -- 2 stars (hint used)'}<br><br>${level.explanation}${summaryHtml}<br><br><em>Moving to next level...</em>`
+            );
+            setTimeout(() => this.startLevel(nextLevel), 3000);
         }
 
         buttons.push({
@@ -328,6 +527,17 @@ const Game = {
 
         // Build victory message fresh each time (not appending)
         let msg = `You completed ${zone.name}! ${zoneStars}/${maxStars} stars earned.`;
+
+        // Add learning summary for the zone
+        const zoneConcepts = zoneLevels
+            .filter(l => this.state.progress[l.id]?.completed && l.lesson)
+            .map(l => `<li>${l.lesson.concept}</li>`)
+            .join('');
+
+        if (zoneConcepts) {
+            msg += `<div class="victory-summary"><h4>What you learned in this zone:</h4><ul>${zoneConcepts}</ul></div>`;
+        }
+
         if (allCompleted) {
             msg += '<br><br><strong>Congratulations! You have mastered all 5 zones!</strong>';
         }
@@ -354,6 +564,17 @@ const Game = {
         if (continueBtn) continueBtn.textContent = allCompleted ? 'Back to Map' : 'Continue Journey';
 
         this.showScreen('screen-victory');
+    },
+
+    // Helper: format question type for display
+    _formatType(type) {
+        const labels = {
+            'multiple-choice': 'Multiple Choice',
+            'compare-choice': 'Compare Two Options',
+            'fill-blank': 'Fill in the Blank',
+            'drag-drop': 'Put in Order'
+        };
+        return labels[type] || type;
     },
 
     // Bind global events

@@ -1276,3 +1276,327 @@ body {
         max-height: 200px;
     }
 }
+
+/* ===== Learn Mode & Level Menu ===== */
+
+/* Level menu (Learn/Quiz choice) */
+.level-menu {
+    text-align: center;
+    padding: 20px 0;
+}
+
+.level-menu-header h3 {
+    font-size: 1.3rem;
+    margin-bottom: 4px;
+}
+
+.level-type {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    margin-bottom: 16px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.level-status {
+    display: inline-block;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.level-status.completed {
+    background: rgba(34, 197, 94, 0.15);
+    color: var(--accent-green);
+}
+
+.level-status.studied {
+    background: rgba(74, 158, 255, 0.15);
+    color: var(--accent-blue);
+}
+
+.level-status.new {
+    background: rgba(245, 158, 11, 0.1);
+    color: var(--accent-orange);
+}
+
+.level-menu-actions {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+}
+
+.level-menu-actions .btn {
+    min-width: 180px;
+    justify-content: center;
+    padding: 14px 28px;
+    font-size: 1rem;
+}
+
+.btn-learn {
+    background: var(--bg-card);
+    color: var(--text-primary);
+    border: 2px solid var(--accent-blue);
+}
+
+.btn-learn:hover {
+    background: rgba(74, 158, 255, 0.1);
+    transform: translateY(-1px);
+}
+
+.btn-quiz {
+    background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+    color: white;
+}
+
+.btn-quiz:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-glow);
+}
+
+.menu-tip {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    font-style: italic;
+}
+
+.learned-badge {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 3px 10px;
+    background: rgba(74, 158, 255, 0.15);
+    color: var(--accent-blue);
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+/* Learn screen content */
+.learn-concept,
+.learn-points,
+.learn-example,
+.learn-mistake {
+    background: var(--bg-secondary);
+    border-radius: var(--radius-sm);
+    padding: 20px;
+    margin-bottom: 16px;
+}
+
+.learn-concept h3,
+.learn-points h3,
+.learn-example h3,
+.learn-mistake h3 {
+    font-size: 1rem;
+    margin-bottom: 10px;
+    color: var(--text-primary);
+}
+
+.learn-concept p {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--text-secondary);
+}
+
+.learn-points ul {
+    list-style: none;
+    padding: 0;
+}
+
+.learn-points li {
+    padding: 6px 0;
+    padding-left: 20px;
+    position: relative;
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+.learn-points li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--accent-green);
+    font-weight: 700;
+}
+
+.example-comparison {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.example-bad,
+.example-good {
+    padding: 14px;
+    border-radius: var(--radius-sm);
+}
+
+.example-bad {
+    background: rgba(239, 68, 68, 0.08);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.example-good {
+    background: rgba(34, 197, 94, 0.08);
+    border: 1px solid rgba(34, 197, 94, 0.2);
+}
+
+.example-label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.example-bad .example-label {
+    color: var(--accent-red);
+}
+
+.example-good .example-label {
+    color: var(--accent-green);
+}
+
+.example-bad code,
+.example-good code {
+    display: block;
+    font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+    font-size: 0.85rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.example-why {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    padding-top: 8px;
+    border-top: 1px solid var(--border-color);
+}
+
+.learn-mistake {
+    border-left: 3px solid var(--accent-orange);
+}
+
+.learn-mistake p {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+.learn-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: space-between;
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border-color);
+}
+
+/* Answer summary panel */
+.answer-summary {
+    margin-top: 16px;
+    padding: 16px;
+    background: rgba(74, 158, 255, 0.08);
+    border: 1px solid rgba(74, 158, 255, 0.2);
+    border-radius: var(--radius-sm);
+}
+
+.answer-summary h4 {
+    font-size: 0.9rem;
+    color: var(--accent-blue);
+    margin-bottom: 8px;
+}
+
+.summary-concept {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 10px;
+    line-height: 1.5;
+}
+
+.summary-points {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.summary-point {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+/* Victory screen learning summary */
+.victory-summary {
+    text-align: left;
+    margin-top: 16px;
+    padding: 16px;
+    background: rgba(74, 158, 255, 0.08);
+    border: 1px solid rgba(74, 158, 255, 0.2);
+    border-radius: var(--radius-sm);
+}
+
+.victory-summary h4 {
+    font-size: 0.95rem;
+    color: var(--accent-blue);
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.victory-summary ul {
+    list-style: none;
+    padding: 0;
+}
+
+.victory-summary li {
+    padding: 4px 0;
+    padding-left: 16px;
+    position: relative;
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    line-height: 1.5;
+}
+
+.victory-summary li::before {
+    content: '•';
+    position: absolute;
+    left: 0;
+    color: var(--accent-blue);
+}
+
+/* Responsive for learn mode */
+@media (max-width: 640px) {
+    .level-menu-actions {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .level-menu-actions .btn {
+        width: 100%;
+        max-width: 280px;
+    }
+
+    .learn-actions {
+        flex-direction: column;
+    }
+
+    .learn-actions .btn {
+        width: 100%;
+        text-align: center;
+        justify-content: center;
+    }
+
+    .example-comparison {
+        gap: 8px;
+    }
+}
