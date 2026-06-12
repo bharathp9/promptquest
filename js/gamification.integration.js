@@ -103,7 +103,10 @@ const GameIntegration = {
       Streak.dailyStreak
     );
 
+    console.log(`[Points Debug] Attempts: ${this.currentAttempts}, Zone: ${zoneId}, Calculated:`, pointsData);
+
     this.currentLevelPoints += pointsData.finalPoints;
+    console.log(`[Points Debug] Current Level Points now: ${this.currentLevelPoints}`);
 
     // Update streak
     const streakResult = Streak.onCorrectAnswer();
@@ -181,6 +184,8 @@ const GameIntegration = {
   onLevelComplete(level, stars) {
     const zoneId = level.zone;
     const levelNumber = level.number;
+
+    console.log(`[Level Complete Debug] Level: ${level.id}, Stars: ${stars}, Points: ${this.currentLevelPoints}`);
 
     // Update progress
     const progressResult = Progress.updateLevel(zoneId, levelNumber, stars, this.currentLevelPoints);
@@ -316,9 +321,21 @@ const GameIntegration = {
 
 // Initialize when DOM is ready and Game is available
 document.addEventListener('DOMContentLoaded', () => {
-  setTimeout(() => {
-    GameIntegration.init();
-  }, 500);
+  let retries = 0;
+  const maxRetries = 20; // Max 10 seconds (20 × 500ms)
+
+  const tryInit = () => {
+    if (window.Game) {
+      GameIntegration.init();
+    } else if (retries < maxRetries) {
+      retries++;
+      setTimeout(tryInit, 500);
+    } else {
+      console.error('❌ Game object failed to initialize after 10 seconds');
+    }
+  };
+
+  setTimeout(tryInit, 500);
 });
 
 // Expose for testing

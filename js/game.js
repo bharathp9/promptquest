@@ -347,6 +347,9 @@ const Game = {
         this.state.currentLevel = level;
         Components.hideFeedback();
 
+        // Clear previous buttons
+        document.getElementById('game-actions').innerHTML = '';
+
         document.getElementById('game-title').textContent = `Level ${level.zone}-${level.number}: ${level.title}`;
         document.getElementById('game-stars').textContent = '';
 
@@ -508,7 +511,7 @@ const Game = {
                 });
             } else {
                 buttons.push({
-                    label: 'Next Level →',
+                    label: 'Next Challenge →',
                     class: 'btn-primary',
                     onClick: () => this.startLevel(nextLevel)
                 });
