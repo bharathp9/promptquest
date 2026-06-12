@@ -350,6 +350,11 @@ const Game = {
         // Clear previous buttons
         document.getElementById('game-actions').innerHTML = '';
 
+        // Notify gamification system
+        if (window.GameIntegration) {
+            GameIntegration.onLevelStart(level);
+        }
+
         document.getElementById('game-title').textContent = `Level ${level.zone}-${level.number}: ${level.title}`;
         document.getElementById('game-stars').textContent = '';
 
@@ -438,9 +443,14 @@ const Game = {
         this.saveProgress();
         this.updateStats();
 
-        // Trigger gamification level completion when answer is correct
-        if (isCorrect && window.GameIntegration) {
-            GameIntegration.onLevelComplete(level, stars);
+        // Notify gamification system about the answer
+        if (window.GameIntegration) {
+            GameIntegration.onAnswerSubmitted(level, isCorrect, userAnswer);
+
+            // Trigger gamification level completion when answer is correct
+            if (isCorrect) {
+                GameIntegration.onLevelComplete(level, stars);
+            }
         }
 
         // Build feedback with learning summary

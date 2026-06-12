@@ -8,11 +8,7 @@ const GameificationInit = {
   init() {
     if (this.initialized) return;
 
-    console.log('Initializing PromptQuest Gamification System...');
-    console.log('[Init Check] GameConfig exists:', typeof GameConfig !== 'undefined');
-    if (typeof GameConfig !== 'undefined') {
-      console.log('[Init Check] GameConfig.POINTS:', GameConfig.POINTS);
-    }
+    console.log('✅ Initializing PromptQuest Gamification System...');
 
     // 1. Initialize storage-based systems
     Progress.init();
@@ -26,7 +22,7 @@ const GameificationInit = {
     this.updateUIState();
 
     // 4. Setup analytics
-    console.log('Gamification initialized. User:', Analytics.userId, 'Session:', Analytics.sessionId);
+    console.log('✅ Gamification initialized. User:', Analytics.userId);
 
     this.initialized = true;
   },

@@ -8,41 +8,14 @@ const GameIntegration = {
   currentLevelPoints: 0,
   questionStartTime: 0,
 
-  // Initialize integration
+  // Initialize integration (just set the flag, game.js will call functions directly)
   init() {
-    // Hook into Game object to add gamification
-    if (window.Game) {
-      this.hookGameMethods();
-      console.log('✅ Gamification integration initialized');
-    } else {
-      console.warn('⚠️ Game object not found, retrying...');
-      setTimeout(() => this.init(), 500);
-    }
+    console.log('✅ GameIntegration system ready');
   },
 
-  // Hook into existing game methods
+  // Initialize the integration (called from game.js)
   hookGameMethods() {
-    const originalHandleAnswer = Game.handleAnswer.bind(Game);
-    const originalStartLevel = Game.startLevel.bind(Game);
-    const originalShowLevelMenu = Game.showLevelMenu.bind(Game);
-
-    // Override handleAnswer to include gamification
-    Game.handleAnswer = (level, isCorrect, userAnswer) => {
-      this.onAnswerSubmitted(level, isCorrect, userAnswer);
-      return originalHandleAnswer(level, isCorrect, userAnswer);
-    };
-
-    // Override startLevel to initialize tracking
-    Game.startLevel = (level) => {
-      this.onLevelStart(level);
-      return originalStartLevel(level);
-    };
-
-    // Override showLevelMenu for UI integration
-    Game.showLevelMenu = (level) => {
-      this.onLevelMenuOpen(level);
-      return originalShowLevelMenu(level);
-    };
+    console.log('✅ GameIntegration ready for direct calls from game.js');
   },
 
   // ========== EVENT HANDLERS ==========
@@ -319,31 +292,10 @@ const GameIntegration = {
   },
 };
 
-// Try to initialize immediately (Game might be loaded already)
-if (window.Game) {
+// Initialize when document loads
+document.addEventListener('DOMContentLoaded', () => {
   GameIntegration.init();
-  console.log('✅ GameIntegration initialized immediately');
-} else {
-  // Fallback: Wait for Game via DOMContentLoaded
-  document.addEventListener('DOMContentLoaded', () => {
-    let retries = 0;
-    const maxRetries = 20;
-
-    const tryInit = () => {
-      if (window.Game) {
-        GameIntegration.init();
-        console.log('✅ GameIntegration initialized on DOMContentLoaded (after retries)');
-      } else if (retries < maxRetries) {
-        retries++;
-        setTimeout(tryInit, 500);
-      } else {
-        console.error('❌ Game object failed to initialize after 10 seconds');
-      }
-    };
-
-    tryInit();
-  });
-}
+});
 
 // Expose for testing
 window.GameIntegration = GameIntegration;
