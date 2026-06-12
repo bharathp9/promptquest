@@ -435,6 +435,11 @@ const Game = {
         this.saveProgress();
         this.updateStats();
 
+        // Trigger gamification level completion when answer is correct
+        if (isCorrect && window.GameIntegration) {
+            GameIntegration.onLevelComplete(level, stars);
+        }
+
         // Build feedback with learning summary
         this._showAnswerFeedback(level, isCorrect, stars, hasHint);
     },

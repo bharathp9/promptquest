@@ -1,0 +1,342 @@
+/* PromptQuest Gamification Styling */
+
+/* ========================================
+   Streak Display in Header
+   ======================================== */
+
+.streak-display {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: rgba(255, 140, 0, 0.1);
+  border-radius: 8px;
+  margin-right: 16px;
+  font-size: 0.95em;
+}
+
+.streak-display[data-streak-active="false"] {
+  opacity: 0.6;
+}
+
+.streak-icon {
+  font-size: 1.2em;
+  display: inline-block;
+}
+
+.streak-counter {
+  font-weight: 600;
+  color: #ff8c00;
+}
+
+.streak-label {
+  color: #a0a0b8;
+  font-size: 0.85em;
+}
+
+/* Daily streak with multiplier indicator */
+.streak-display.multiplier-active {
+  background: rgba(255, 140, 0, 0.2);
+  border: 1px solid #ff8c00;
+}
+
+.streak-display.multiplier-active .streak-icon {
+  animation: fire-glow 2s infinite;
+}
+
+/* Points display in UI */
+[data-display="points"] {
+  font-weight: bold;
+  color: #51cf66;
+  font-size: 1.1em;
+}
+
+[data-display="points"].points-update {
+  animation: stat-update 200ms ease-out;
+}
+
+/* Multiplier indicator */
+[data-multiplier="display"] {
+  display: none;
+  font-size: 0.85em;
+  font-weight: 600;
+  color: #f59e0b;
+  background: rgba(245, 158, 11, 0.1);
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin-left: 4px;
+}
+
+[data-multiplier="display"].active {
+  display: inline-block;
+}
+
+/* ========================================
+   Badge Display
+   ======================================== */
+
+.badge-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 12px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  text-align: center;
+  transition: all 150ms ease-out;
+}
+
+.badge-item:hover {
+  transform: translateY(-2px);
+  border-color: #4a9eff;
+  box-shadow: 0 4px 12px rgba(74, 158, 255, 0.2);
+}
+
+.badge-icon {
+  font-size: 2em;
+  display: block;
+}
+
+.badge-name {
+  font-size: 0.85em;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+#badges-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 12px;
+  margin: 20px 0;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--text-muted);
+  font-size: 0.9em;
+}
+
+/* ========================================
+   Zone Progress Visualization
+   ======================================== */
+
+.zone-progress {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 12px 0;
+}
+
+.zone-progress-bar {
+  flex: 1;
+  height: 6px;
+  background: var(--bg-secondary);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.zone-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #4a9eff, #a855f7);
+  border-radius: 3px;
+  transition: width 300ms ease-out;
+}
+
+.zone-progress-text {
+  font-size: 0.85em;
+  color: var(--text-muted);
+  min-width: 50px;
+  text-align: right;
+}
+
+/* ========================================
+   Wrong Answer Feedback Styling
+   ======================================== */
+
+.wrong-answer-option {
+  position: relative;
+  animation: shake 200ms ease-out;
+}
+
+.wrong-answer-option.animate-shake {
+  border-color: #ff6b6b !important;
+}
+
+.wrong-answer-tooltip {
+  margin-top: 8px;
+  padding: 8px 12px;
+  background: #ffe0e0;
+  border-left: 3px solid #ff6b6b;
+  border-radius: 4px;
+  font-size: 0.9em;
+  animation: slide-down 400ms ease-out;
+}
+
+.tooltip-explanation {
+  color: #d32f2f;
+  margin: 0;
+  line-height: 1.4;
+  animation: fade-up 300ms ease-in 400ms both;
+}
+
+/* ========================================
+   Progress Bar in Level
+   ======================================== */
+
+.level-progress-container {
+  margin: 16px 0;
+}
+
+.level-progress-text {
+  font-size: 0.85em;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.progress-bar-wrapper {
+  height: 4px;
+  background: var(--bg-secondary);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #4a9eff, #a855f7);
+  border-radius: 2px;
+  width: 0%;
+  transition: width 250ms ease-in-out;
+}
+
+@media (max-width: 480px) {
+  .progress-bar {
+    height: 3px;
+    transition: width 200ms ease-in-out;
+  }
+}
+
+/* ========================================
+   Reflection Timer (shown after wrong answer)
+   ======================================== */
+
+.reflection-countdown {
+  padding: 12px 16px;
+  background: rgba(100, 150, 255, 0.1);
+  border-left: 3px solid #4a9eff;
+  border-radius: 4px;
+  text-align: center;
+  color: #4a9eff;
+  font-size: 0.9em;
+  margin: 12px 0;
+  font-weight: 500;
+}
+
+/* ========================================
+   Toast Notifications (override from animations.css)
+   ======================================== */
+
+.toast {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 0.9em;
+  z-index: 1000;
+  opacity: 0;
+  pointer-events: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.toast.toast-show {
+  animation: toast-slide-in 300ms ease-out forwards;
+  pointer-events: auto;
+}
+
+.toast.toast-success {
+  background: #51cf66;
+  color: white;
+}
+
+.toast.toast-info {
+  background: #4a9eff;
+  color: white;
+}
+
+.toast.toast-warning {
+  background: #f59e0b;
+  color: white;
+}
+
+.toast.toast-error {
+  background: #ff6b6b;
+  color: white;
+}
+
+@media (max-width: 480px) {
+  .toast {
+    bottom: 16px;
+    right: 16px;
+    left: 16px;
+    width: auto;
+  }
+
+  .streak-display {
+    margin-right: 8px;
+    padding: 6px 10px;
+    font-size: 0.85em;
+  }
+
+  .badge-item {
+    padding: 8px;
+  }
+
+  .badge-icon {
+    font-size: 1.5em;
+  }
+
+  .badge-name {
+    font-size: 0.8em;
+  }
+
+  #badges-container {
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 8px;
+  }
+}
+
+/* ========================================
+   Accessibility
+   ======================================== */
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .badge-item {
+    transition: none;
+  }
+
+  .zone-progress-fill {
+    transition: none;
+  }
+
+  .streak-display.multiplier-active .streak-icon {
+    animation: none;
+  }
+}
