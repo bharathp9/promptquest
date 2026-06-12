@@ -1,0 +1,668 @@
+/* PromptQuest Gamification Animations */
+
+/* ========================================
+   Wrong Answer Animations (1000ms total)
+   ======================================== */
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-3px); }
+  75% { transform: translateX(3px); }
+}
+
+@media (max-width: 480px) {
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-2px); }
+    75% { transform: translateX(2px); }
+  }
+}
+
+@keyframes pulse-red {
+  0% { background-color: white; }
+  50% { background-color: #ff6b6b; }
+  100% { background-color: white; }
+}
+
+@keyframes slide-down {
+  from {
+    transform: translateY(-10px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-shake {
+  animation: shake 200ms ease-out !important;
+}
+
+.animate-pulse-red {
+  animation: pulse-red 300ms ease-in-out !important;
+}
+
+.animate-slide-down {
+  animation: slide-down 400ms ease-out !important;
+}
+
+.animate-fade-up {
+  animation: fade-up 300ms ease-in 400ms both !important;
+}
+
+/* ========================================
+   Correct Answer Animations (1000ms total)
+   ======================================== */
+
+@keyframes highlight-green {
+  from { background-color: white; }
+  to { background-color: #51cf66; }
+}
+
+@keyframes pop-checkmark {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes float-up {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-30px);
+    opacity: 0;
+  }
+}
+
+@keyframes burst-particle {
+  from {
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+  }
+  to {
+    transform: translate(var(--tx), var(--ty)) scale(0);
+    opacity: 0;
+  }
+}
+
+.animate-highlight-green {
+  animation: highlight-green 300ms ease-out !important;
+}
+
+.animate-pop {
+  animation: pop-checkmark 400ms cubic-bezier(0.68, -0.55, 0.265, 1.55) 300ms both !important;
+  font-weight: bold;
+  font-size: 1.2em;
+  color: #51cf66;
+}
+
+.animate-float-up {
+  animation: float-up 600ms ease-out 400ms both !important;
+  font-weight: bold;
+  color: #51cf66;
+}
+
+.animate-burst {
+  animation: burst-particle 500ms ease-out 300ms both !important;
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #51cf66;
+  pointer-events: none;
+}
+
+/* ========================================
+   Progress Bar Animations
+   ======================================== */
+
+@keyframes progress-fill {
+  from { width: 0; }
+  to { width: var(--progress); }
+}
+
+@keyframes milestone-flash {
+  0% { box-shadow: 0 0 0 0 rgba(74, 158, 255, 0.7); }
+  50% { box-shadow: 0 0 0 6px rgba(74, 158, 255, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(74, 158, 255, 0); }
+}
+
+.progress-bar {
+  background: linear-gradient(90deg, #4a9eff, #a855f7);
+  height: 4px;
+  border-radius: 2px;
+  transition: width 250ms ease-in-out;
+  box-shadow: 0 0 0 0 transparent;
+}
+
+@media (max-width: 480px) {
+  .progress-bar {
+    height: 3px;
+    transition: width 200ms ease-in-out;
+  }
+}
+
+.progress-bar.milestone-glow {
+  animation: milestone-flash 200ms ease-in-out !important;
+}
+
+/* ========================================
+   Badge Animations
+   ======================================== */
+
+@keyframes popup-appear {
+  from {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes badge-bounce {
+  0%, 100% { transform: translateY(0); }
+  25% { transform: translateY(-12px); }
+  50% { transform: translateY(0); }
+  75% { transform: translateY(-6px); }
+}
+
+@keyframes badge-text-fade {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-popup-appear {
+  animation: popup-appear 400ms ease-out !important;
+}
+
+.animate-badge-bounce {
+  animation: badge-bounce 600ms cubic-bezier(0.68, -0.55, 0.265, 1.55) 200ms !important;
+  font-size: 3em;
+  display: inline-block;
+}
+
+/* ========================================
+   Streak Counter Animations
+   ======================================== */
+
+@keyframes streak-counter-increment {
+  0% {
+    transform: translateY(10px) scale(1);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes fire-glow {
+  0%, 100% { text-shadow: 0 0 0 rgba(255, 140, 0, 0); }
+  50% { text-shadow: 0 0 8px rgba(255, 140, 0, 0.8); }
+}
+
+.streak-counter-animate {
+  animation: streak-counter-increment 200ms ease-out !important;
+}
+
+.fire-glow {
+  animation: fire-glow 300ms ease-in-out !important;
+}
+
+/* ========================================
+   General Purpose Animations
+   ======================================== */
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes scale-in {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes slide-in-up {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 300ms ease-in !important;
+}
+
+.animate-fade-out {
+  animation: fade-out 300ms ease-out !important;
+}
+
+.animate-scale-in {
+  animation: scale-in 300ms ease-out !important;
+}
+
+.animate-slide-in-up {
+  animation: slide-in-up 400ms ease-out !important;
+}
+
+/* ========================================
+   Pulse and Glow Effects
+   ======================================== */
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(74, 158, 255, 0.7);
+  }
+  50% {
+    box-shadow: 0 0 0 10px rgba(74, 158, 255, 0);
+  }
+}
+
+.animate-pulse {
+  animation: pulse 1s ease-in-out !important;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s infinite !important;
+}
+
+/* ========================================
+   Reduced Motion Support
+   ======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ========================================
+   Element-Specific Styles
+   ======================================== */
+
+.wrong-answer-tooltip {
+  margin-top: 8px;
+  padding: 8px 12px;
+  background: #ffe0e0;
+  border-left: 3px solid #ff6b6b;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+
+.tooltip-explanation {
+  color: #d32f2f;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.checkmark {
+  display: inline-block;
+  color: #51cf66;
+  font-weight: bold;
+  font-size: 1.3em;
+  margin-left: 8px;
+}
+
+.points-float {
+  display: inline-block;
+  color: #51cf66;
+  font-weight: bold;
+  margin-left: 8px;
+  font-size: 1.1em;
+}
+
+.particle {
+  position: absolute;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+.correct-feedback {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+  padding: 8px 12px;
+  background: #e8f5e9;
+  border-left: 3px solid #51cf66;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+
+.feedback-icon {
+  color: #51cf66;
+  font-weight: bold;
+  font-size: 1.1em;
+}
+
+.feedback-text {
+  color: #2e7d32;
+  font-weight: 600;
+}
+
+.feedback-points {
+  color: #558b2f;
+  margin-left: auto;
+  font-weight: bold;
+}
+
+/* ========================================
+   Toast Notifications
+   ======================================== */
+
+@keyframes toast-slide-in {
+  from {
+    transform: translateX(400px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes toast-slide-out {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(400px);
+    opacity: 0;
+  }
+}
+
+.toast {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 0.9em;
+  z-index: 1000;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.toast.toast-show {
+  animation: toast-slide-in 300ms ease-out forwards;
+  pointer-events: auto;
+}
+
+.toast.toast-success {
+  background: #51cf66;
+  color: white;
+}
+
+.toast.toast-info {
+  background: #4a9eff;
+  color: white;
+}
+
+.toast.toast-error {
+  background: #ff6b6b;
+  color: white;
+}
+
+.toast.toast-warning {
+  background: #f59e0b;
+  color: white;
+}
+
+@media (max-width: 480px) {
+  .toast {
+    bottom: 16px;
+    right: 16px;
+    left: 16px;
+    width: auto;
+  }
+}
+
+/* ========================================
+   Badge Popup Styles
+   ======================================== */
+
+.badge-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+
+.badge-popup {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 16px;
+  padding: 40px;
+  text-align: center;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  max-width: 400px;
+  color: white;
+}
+
+.badge-content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.badge-icon {
+  font-size: 80px;
+  display: block;
+}
+
+.badge-title {
+  font-size: 1.5em;
+  font-weight: bold;
+  margin: 0;
+}
+
+.badge-name {
+  font-size: 1.2em;
+  font-weight: 600;
+  margin: 0;
+}
+
+.badge-description {
+  font-size: 0.9em;
+  opacity: 0.9;
+  margin: 0;
+}
+
+@media (max-width: 480px) {
+  .badge-popup {
+    max-width: 90vw;
+    padding: 24px;
+  }
+
+  .badge-icon {
+    font-size: 60px;
+  }
+
+  .badge-title {
+    font-size: 1.3em;
+  }
+}
+
+/* ========================================
+   Victory Screen Styles
+   ======================================== */
+
+.victory-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1500;
+}
+
+.victory-screen {
+  background: linear-gradient(135deg, #0a0a0f, #1a1a2e);
+  border-radius: 20px;
+  padding: 40px;
+  text-align: center;
+  max-width: 500px;
+  border: 2px solid #4a9eff;
+  box-shadow: 0 0 30px rgba(74, 158, 255, 0.3);
+}
+
+.victory-title {
+  font-size: 2em;
+  background: linear-gradient(135deg, #4a9eff, #a855f7);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 0 0 20px 0;
+}
+
+.victory-stars {
+  font-size: 1.2em;
+  color: #f59e0b;
+  margin: 20px 0;
+}
+
+.victory-stats {
+  color: #a0a0b8;
+  margin: 20px 0;
+  text-align: center;
+}
+
+.victory-stats p {
+  margin: 8px 0;
+}
+
+.victory-btn {
+  margin-top: 20px;
+}
+
+/* ========================================
+   Button States
+   ======================================== */
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+button:not(:disabled) {
+  cursor: pointer;
+  transition: all 100ms ease-out;
+}
+
+button:active:not(:disabled) {
+  transform: scale(0.95);
+}
+
+/* ========================================
+   Stat Update Animation
+   ======================================== */
+
+@keyframes stat-update {
+  0% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.stat-update-animate {
+  animation: stat-update 200ms ease-out !important;
+}
+
+/* ========================================
+   Screen Reader Only
+   ======================================== */
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
