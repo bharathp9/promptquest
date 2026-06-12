@@ -1,7 +1,7 @@
 // Event tracking and analytics
 const Analytics = {
-  sessionId: this.generateSessionId(),
-  userId: this.generateUserId(),
+  _sessionId: null,
+  _userId: null,
 
   generateSessionId() {
     return 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
@@ -14,6 +14,22 @@ const Analytics = {
       localStorage.setItem('promptquest_user_id', userId);
     }
     return userId;
+  },
+
+  // Lazy initialize session and user IDs
+  init() {
+    if (!this._sessionId) this._sessionId = this.generateSessionId();
+    if (!this._userId) this._userId = this.generateUserId();
+  },
+
+  get sessionId() {
+    if (!this._sessionId) this.init();
+    return this._sessionId;
+  },
+
+  get userId() {
+    if (!this._userId) this.init();
+    return this._userId;
   },
 
   // Track an event
