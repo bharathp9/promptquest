@@ -136,11 +136,17 @@ const GameificationInit = {
 
     // Check if zone is complete
     if (Progress.isZoneComplete(zoneId)) {
+      // Calculate accuracy for this zone
+      const zoneLevels = LEVELS.filter(l => l.zone === zoneId);
+      const zoneProgress = Game.state.progress;
+      const correctAnswers = zoneLevels.filter(l => zoneProgress[l.id]?.completed).length;
+      const accuracy = zoneLevels.length > 0 ? Math.round((correctAnswers / zoneLevels.length) * 100) : 0;
+
       this.onZoneComplete(zoneId, {
         zoneStars: Progress.getZone(zoneId).stars,
         maxZoneStars: Progress.getZone(zoneId).maxStars,
         totalPoints: pointsEarned,
-        accuracy: 85, // Calculate from actual data
+        accuracy: accuracy,
       });
     }
 

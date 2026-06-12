@@ -319,24 +319,31 @@ const GameIntegration = {
   },
 };
 
-// Initialize when DOM is ready and Game is available
-document.addEventListener('DOMContentLoaded', () => {
-  let retries = 0;
-  const maxRetries = 20; // Max 10 seconds (20 × 500ms)
+// Try to initialize immediately (Game might be loaded already)
+if (window.Game) {
+  GameIntegration.init();
+  console.log('✅ GameIntegration initialized immediately');
+} else {
+  // Fallback: Wait for Game via DOMContentLoaded
+  document.addEventListener('DOMContentLoaded', () => {
+    let retries = 0;
+    const maxRetries = 20;
 
-  const tryInit = () => {
-    if (window.Game) {
-      GameIntegration.init();
-    } else if (retries < maxRetries) {
-      retries++;
-      setTimeout(tryInit, 500);
-    } else {
-      console.error('❌ Game object failed to initialize after 10 seconds');
-    }
-  };
+    const tryInit = () => {
+      if (window.Game) {
+        GameIntegration.init();
+        console.log('✅ GameIntegration initialized on DOMContentLoaded (after retries)');
+      } else if (retries < maxRetries) {
+        retries++;
+        setTimeout(tryInit, 500);
+      } else {
+        console.error('❌ Game object failed to initialize after 10 seconds');
+      }
+    };
 
-  setTimeout(tryInit, 500);
-});
+    tryInit();
+  });
+}
 
 // Expose for testing
 window.GameIntegration = GameIntegration;
