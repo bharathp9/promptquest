@@ -98,7 +98,7 @@ const Certificate = {
                                     </div>
                                     <div class="cert-footer-right">
                                         <span class="cert-issuer">Bharath Kumar</span>
-                                        <span class="cert-issuer-label">SWAI | Strategic Workshops in AI</span>
+                                        <span class="cert-issuer-label">AWAI | Automate Work with AI</span>
                                     </div>
                                 </div>
 
@@ -109,7 +109,7 @@ const Certificate = {
                     </div>
                 </div>
 
-                <p class="cert-disclaimer">This certificate verifies completion of PromptQuest: The Prompt Engineering Dojo, created by Bharath Kumar for SWAI.</p>
+                <p class="cert-disclaimer">This certificate verifies completion of PromptQuest: The Prompt Engineering Dojo, created by Bharath Kumar for AWAI.</p>
             </div>
         `;
 
