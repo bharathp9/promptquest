@@ -498,16 +498,21 @@ const Game = {
                 class: 'btn-ghost',
                 onClick: () => this._showAnswerAndContinue(level, isLastInZone, nextLevel)
             });
-        } else if (isLastInZone) {
-            Components.showFeedback('success',
-                `<strong>Correct!</strong> ${stars === 3 ? 'Perfect -- 3 stars!' : 'Good job -- 2 stars (hint used)'}<br><br>${level.explanation}${summaryHtml}<br><br><em>Zone complete! Moving to summary...</em>`
-            );
-            setTimeout(() => this.showVictory(level.zone), 3000);
-        } else {
-            Components.showFeedback('success',
-                `<strong>Correct!</strong> ${stars === 3 ? 'Perfect -- 3 stars!' : 'Good job -- 2 stars (hint used)'}<br><br>${level.explanation}${summaryHtml}<br><br><em>Moving to next level...</em>`
-            );
-            setTimeout(() => this.startLevel(nextLevel), 3000);
+        } else if (isCorrect) {
+            // Show next button for correct answers
+            if (isLastInZone) {
+                buttons.push({
+                    label: 'See Zone Result →',
+                    class: 'btn-primary',
+                    onClick: () => this.showVictory(level.zone)
+                });
+            } else {
+                buttons.push({
+                    label: 'Next Level →',
+                    class: 'btn-primary',
+                    onClick: () => this.startLevel(nextLevel)
+                });
+            }
         }
 
         buttons.push({

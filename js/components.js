@@ -13,14 +13,19 @@ const Components = {
 
         const list = document.createElement('div');
         list.className = 'choice-list';
+        let answered = false; // Prevent multiple submissions
 
         level.choices.forEach((choice, index) => {
             const btn = document.createElement('button');
             btn.className = 'choice-item';
             btn.textContent = choice;
-            btn.addEventListener('click', () => {
+            btn.addEventListener('click', (e) => {
+                if (answered) return; // Prevent multiple clicks
+                answered = true;
+
                 list.querySelectorAll('.choice-item').forEach(b => {
                     b.classList.add('disabled');
+                    b.disabled = true; // Actually disable buttons
                 });
 
                 const isCorrect = index === level.correct;
@@ -51,14 +56,19 @@ const Components = {
 
         const list = document.createElement('div');
         list.className = 'choice-list';
+        let answered = false; // Prevent multiple submissions
 
         level.choices.forEach((choice, index) => {
             const btn = document.createElement('button');
             btn.className = 'choice-item';
             btn.textContent = choice;
-            btn.addEventListener('click', () => {
+            btn.addEventListener('click', (e) => {
+                if (answered) return; // Prevent multiple clicks
+                answered = true;
+
                 list.querySelectorAll('.choice-item').forEach(b => {
                     b.classList.add('disabled');
+                    b.disabled = true; // Actually disable buttons
                 });
 
                 const isCorrect = index === level.correct;
