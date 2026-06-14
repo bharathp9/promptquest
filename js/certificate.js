@@ -81,7 +81,7 @@ const Certificate = {
                                 <div class="cert-zones-row">
                                     ${this.getZoneResults().map(z => `
                                         <div class="cert-zone-pill">
-                                            <span class="cert-zone-stars">${'&#9733;'.repeat(z.stars)}${'&#9734;'.repeat(z.max - z.stars)}</span>
+                                            <span class="cert-zone-stars"><span class="filled">${'&#9733;'.repeat(z.stars)}</span><span class="empty">${'&#9734;'.repeat(z.max - z.stars)}</span></span>
                                             <span class="cert-zone-name">${z.name}</span>
                                         </div>
                                     `).join('')}

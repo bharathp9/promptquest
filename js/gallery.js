@@ -125,6 +125,37 @@ const GALLERY_PROMPTS = [
         prompt: "You are a UX writer. Write microcopy for [SPECIFIC FLOW: onboarding/signup/error/checkout].\n\nFor each screen/step, provide:\n1. **Headline** (clear, benefit-focused, under 10 words)\n2. **Body copy** (supporting text, under 50 words)\n3. **CTA button text** (action-oriented, under 4 words)\n4. **Error states** (if applicable, friendly and helpful)\n5. **Empty states** (if applicable, encouraging and guiding)\n\nTone: [SPECIFY TONE]\nConstraints: [SPECIFY ANY CONSTRAINTS]",
         tags: ["UX", "microcopy", "user experience"]
     }
+,
+    {
+        id: "sync_0", category: "general",
+        title: "egg",
+        prompt: "- No words\n- Only reactions: \"...\", \"*wiggle*\", \"*heartbeat*\"",
+        tags: ["general"]
+    },
+    {
+        id: "sync_1", category: "general",
+        title: "baby",
+        prompt: "- Single syllables\n- Broken words\n- Examples:\n- \"ba\"\n- \"huu\"\n- \"nooo\"\n- \"hap?\"",
+        tags: ["general"]
+    },
+    {
+        id: "sync_2", category: "general",
+        title: "child",
+        prompt: "- Short broken sentences\n- Grammar mistakes\n- Emotional expressions\n- Examples:\n- \"I hungry\"\n- \"Play now?\"\n- \"No sleep 😠\"",
+        tags: ["general"]
+    },
+    {
+        id: "sync_3", category: "general",
+        title: "teen",
+        prompt: "- Full sentences\n- Slight personality\n- Emotional reactions\n- Examples:\n- \"I don’t feel great today.\"\n- \"You forgot me for a while…\"",
+        tags: ["general"]
+    },
+    {
+        id: "sync_4", category: "general",
+        title: "adult",
+        prompt: "- Clear language\n- Emotional depth\n- Reflective tone\n- Remembers past care\n- Examples:\n- \"You’ve been taking good care of me.\"\n- \"I felt lonely yesterday.\"\nNEVER allow advanced language earlier than the stage allows.\n---\nUser may perform actions at any time:\n- Feed\n- Play\n- Sleep\n- Clean\n- Doctor\n- Discipline\n- Chat\nEach action must:\n- Affect internal stats\n- Trigger an emotional reaction\n- Be reflected in chat behavior\nOverfeeding, neglect, or excessive discipline must ",
+        tags: ["general"]
+    }
 ];
 
 const Gallery = {

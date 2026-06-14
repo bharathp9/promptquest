@@ -43,7 +43,10 @@ const Music = {
         this.toggleBtn.className = 'btn btn-small btn-ghost';
         this.toggleBtn.innerHTML = '&#128266; Music Off';
         this.toggleBtn.title = 'Click to toggle music';
-        this.toggleBtn.addEventListener('click', () => this.toggle());
+        this.toggleBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            this.toggle();
+        });
 
         const headerRight = document.querySelector('.header-right');
         if (headerRight) {
@@ -55,10 +58,13 @@ const Music = {
     },
 
     _bindFirstInteraction() {
-        const startOnInteraction = () => {
+        const startOnInteraction = (e) => {
+            // Don't auto-start if user clicked the music button itself
+            if (this.toggleBtn && this.toggleBtn.contains(e.target)) return;
+
             if (!this.started) {
                 this.started = true;
-                this.play();
+                this._startMusic();
             }
             // Remove listeners after first interaction
             document.removeEventListener('click', startOnInteraction);
@@ -73,25 +79,29 @@ const Music = {
 
     toggle() {
         if (this.isPlaying) this.stop();
-        else this.play();
+        else this._startMusic();
     },
 
-    play() {
+    _startMusic() {
         if (this.isPlaying) return;
         this.started = true;
 
+        // Try playing the audio file first
         const playPromise = this.audio.play();
         if (playPromise !== undefined) {
             playPromise.then(() => {
                 this.isPlaying = true;
                 this.updateBtn();
             }).catch(() => {
-                this.startFallbackTone();
+                // Audio file failed or blocked, try fallback tone
+                this._startFallbackTone();
             });
+        } else {
+            this._startFallbackTone();
         }
     },
 
-    startFallbackTone() {
+    _startFallbackTone() {
         try {
             const ctx = new (window.AudioContext || window.webkitAudioContext)();
             if (ctx.state === 'suspended') ctx.resume();
