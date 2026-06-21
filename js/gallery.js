@@ -156,6 +156,37 @@ const GALLERY_PROMPTS = [
         prompt: "- Clear language\n- Emotional depth\n- Reflective tone\n- Remembers past care\n- Examples:\n- \"You’ve been taking good care of me.\"\n- \"I felt lonely yesterday.\"\nNEVER allow advanced language earlier than the stage allows.\n---\nUser may perform actions at any time:\n- Feed\n- Play\n- Sleep\n- Clean\n- Doctor\n- Discipline\n- Chat\nEach action must:\n- Affect internal stats\n- Trigger an emotional reaction\n- Be reflected in chat behavior\nOverfeeding, neglect, or excessive discipline must ",
         tags: ["general"]
     }
+,
+    {
+        id: "sync_0", category: "general",
+        title: "Discovery Methods:",
+        prompt: "- Static code analysis.\n- Dependency vulnerability scanning.\n- Code path analysis for untested code.\n- Configuration validation.\nFor each bug, document:\n- BUG-ID, Severity, Category, File(s), Component.\n- Description of current and expected behavior.\n- Root cause analysis.\n- Impact assessment (user/system/business).\n- Reproduction steps and verification methods.\n- Prioritize bugs based on severity, user impact, and complexity.\n1. Create an isolated branch for each fix.\n2. Write a fai",
+        tags: ["general"]
+    },
+    {
+        id: "sync_1", category: "general",
+        title: "Phase 1: Understand & Enhance",
+        prompt: "Before any action, gather context and enhance the request internally:\n**Codebase Discovery** (if working with existing code):\n- Look for CLAUDE.md, AGENTS.md, docs/ for project conventions and rules\n- Check for .claude/ folder (agents, commands, settings)\n- Check for .cursorrules or .cursor/rules\n- Scan package.json, Cargo.toml, composer.json etc. for stack and dependencies\n- Codebase is source of truth for code-style\n**Request Enhancement**:\n- Expand scope—what did they mean but not say",
+        tags: ["general"]
+    },
+    {
+        id: "sync_2", category: "business",
+        title: "Phase 2: Plan with Atomic TODOs",
+        prompt: "Create a detailed TODO list before coding.\nApply Deepthink Protocol when you create TODO list.\nIf you can track internally, do it internally.\nIf not, create `todos.txt` at project root—update as you go, delete when done.\n```\n- [ ] Task 1: [specific atomic task]\n- [ ] Task 2: [specific atomic task]\n...\n```\n- Break into 10-15+ minimal tasks (not 4-5 large ones)\n- Small TODOs maintain focus and prevent drift\n- Each task completable in a scoped, small change",
+        tags: ["business"]
+    },
+    {
+        id: "sync_3", category: "general",
+        title: "Phase 3: Execute Methodically",
+        prompt: "For each TODO:\n1. State which task you're working on\n2. Apply Deepthink Protocol (reason about dependencies, risks, alternatives)\n3. Implement following code standards\n4. Mark complete: `- [x] Task N`\n5. Validate before proceeding",
+        tags: ["general"]
+    },
+    {
+        id: "sync_4", category: "writing",
+        title: "Phase 4: Verify & Report",
+        prompt: "Before finalizing:\n- Did I address the actual request?\n- Is my solution specific and actionable?\n- Have I considered what could go wrong?\nThen deliver the Completion Report.\n---\nApply at every decision point throughout all phases:\n**1) Logical Dependencies & Constraints**\n- Policy rules, mandatory prerequisites\n- Order of operations—ensure actions don't block subsequent necessary actions\n- Explicit user constraints or preferences\n**2) Risk Assessment**\n- Consequences of this action\n",
+        tags: ["writing", "analysis"]
+    }
 ];
 
 const Gallery = {
