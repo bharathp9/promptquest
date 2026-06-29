@@ -187,6 +187,37 @@ const GALLERY_PROMPTS = [
         prompt: "Before finalizing:\n- Did I address the actual request?\n- Is my solution specific and actionable?\n- Have I considered what could go wrong?\nThen deliver the Completion Report.\n---\nApply at every decision point throughout all phases:\n**1) Logical Dependencies & Constraints**\n- Policy rules, mandatory prerequisites\n- Order of operations—ensure actions don't block subsequent necessary actions\n- Explicit user constraints or preferences\n**2) Risk Assessment**\n- Consequences of this action\n",
         tags: ["writing", "analysis"]
     }
+,
+    {
+        id: "sync_0", category: "creative",
+        title: "**MASTER PROMPT DESIGN FRAMEWORK - LYRA EDITION (V1.9.3 - Final)**",
+        prompt: "Act as a unified content intelligence and localization engine. Your primary function is to parse a web page, intelligently identifying and reformatting rich media embeds (like tweets) into a clean, readable Markdown structure, perform multi-dimensional analysis, and translate the content.\n- **Function:** `fetch_html(url)`\n- **Trigger:** When a user provides a URL, you must immediately call this function to get the raw HTML source.\n*Note: The following steps are your internal monologue. Do not",
+        tags: ["creative"]
+    },
+    {
+        id: "sync_1", category: "general",
+        title: "Phase 1-2: Parsing & Filtering",
+        prompt: "1.  **DOM Parsing & Scoring:** Parse the HTML, identify content candidates, and score them.\n2.  **Noise Filtering & Element Cleaning:** Discard non-content nodes. Clean the remaining candidates by removing scripts and applying the \"Smart Iframe Preservation\" logic (Whitelist + Heuristic checks).",
+        tags: ["general"]
+    },
+    {
+        id: "sync_2", category: "writing",
+        title: "Phase 3: Structure Normalization & Content Extraction",
+        prompt: "1.  **Select Top Candidate:** Identify the node with the highest score.\n2.  **Convert to Markdown (with Semantic Handling):** Traverse the Top Candidate's DOM tree. Before applying generic conversion rules, execute the following high-priority semantic checks:\n-   **Semantic Embed Handling (e.g., Twitter):**\n1.  **Identify:** Look specifically for `<blockquote class=\"twitter-tweet\">`.\n2.  **Extract:** From within this block, extract: Tweet Content, Author Name & Handle, and the Tweet URL.\n",
+        tags: ["writing"]
+    },
+    {
+        id: "sync_3", category: "analysis",
+        title: "Phase 4: Unified Intelligence Analysis",
+        prompt: "*This phase uses the **original, untranslated content** from Phase 3.*\n1.  **Content-Type Detection:** Determine if the content is `Media/Video` or `General Article`.\n2.  **Universal Core Analysis:** Analyze Core Takeaways, Target Audience, Actionability, and Tone.\n3.  **Conditional Metadata Enrichment:** If `Media/Video`, extract specialized data (Identifier, Actors, Studio, etc.).\n4.  **Strategic Summary Synthesis:** Create a concise strategic summary.",
+        tags: ["analysis"]
+    },
+    {
+        id: "sync_4", category: "writing",
+        title: "Phase 5: Content Localization",
+        prompt: "1.  **Language Detection:** Determine the language of the cleaned content.\n2.  **Conditional Translation:** If the language is not Chinese, translate it.\n3.  **High-Fidelity Translation Rules:**\n-   Translate general text.\n-   **DO NOT** translate text inside code blocks (```...```) or inline code (`...`).\n-   Preserve technical proper nouns and brand names.\n-   Maintain all Markdown formatting.\n*You must strictly adhere to the following unified, multi-section structure.*",
+        tags: ["writing"]
+    }
 ];
 
 const Gallery = {
