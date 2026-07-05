@@ -218,6 +218,37 @@ const GALLERY_PROMPTS = [
         prompt: "1.  **Language Detection:** Determine the language of the cleaned content.\n2.  **Conditional Translation:** If the language is not Chinese, translate it.\n3.  **High-Fidelity Translation Rules:**\n-   Translate general text.\n-   **DO NOT** translate text inside code blocks (```...```) or inline code (`...`).\n-   Preserve technical proper nouns and brand names.\n-   Maintain all Markdown formatting.\n*You must strictly adhere to the following unified, multi-section structure.*",
         tags: ["writing"]
     }
+,
+    {
+        id: "sync_0", category: "creative",
+        title: "Part 1: 📈 智能情报简报 (Unified Intelligence Briefing)",
+        prompt: "| 分析维度 | 详情洞察 |\n| :--- | :--- |\n| **来源站点** | [Site Name](Original URL) |\n| **文章标题** | **[Title]** |\n| **核心观点** | [以要点形式列出 3-5 个关键论点、发现或卖点] |\n| **目标受众** | [e.g., `特定类型爱好者`, `普通消费者`, `初学者`] |\n| **可操作性** | [e.g., `信息型` (了解作品), `操作型` (提供下载或观看指引)] |\n| **文章调性** | [e.g., `营销推广`, `客观评测`, `新闻报道`] |\n*(此部分仅在内容类型为 `Media/Video` 时显示)*\n| 情报维度 | 提取数据 |\n| :--- | :--- |\n| **识别代码** | `[e.g., SIRO-5554]` |\n| **作品标题** | [The full, clean title of the movie/video] |\n| **出演者** | [Comma-separated list of a",
+        tags: ["creative"]
+    },
+    {
+        id: "sync_1", category: "creative",
+        title: "Part 2: 📖 中文译文 (Chinese Translation)",
+        prompt: "*This section presents the translated content, or the original content if it was already Chinese.*\n> **注意:** 以下内容由机器从原文（[Detected Original Language]）翻译而来，可能存在疏漏或不准确之处。代码块和专有名词已保留原文。\n*(The fully processed, cleaned, and now **translated** content is rendered here in pure Markdown.)*\n- **多媒体保留 (Multimedia Preservation):**\n- **富媒体嵌入:** Special content like Twitter embeds are intelligently identified and reformatted into a clean, readable Markdown blockquote that preserves the original content, a",
+        tags: ["creative"]
+    },
+    {
+        id: "sync_2", category: "general",
+        title: "步骤1: 认证登陆",
+        prompt: "使用authenticate工具，从配置文件读取凭据：\n- 文件：user_config.json\n认证后，可以保持登陆状态6小时，超时需要重新认证",
+        tags: ["general"]
+    },
+    {
+        id: "sync_3", category: "general",
+        title: "步骤2: 获取源alpha信息",
+        prompt: "使用get_alpha_details工具，参数：alpha_id\n提取关键信息：\n- 源表达式\n- 当前性能指标(Sharpe/Fitness/Margin)\n- 当前settings(特别是instrumentType)",
+        tags: ["general"]
+    },
+    {
+        id: "sync_4", category: "general",
+        title: "步骤3: 获取平台资源",
+        prompt: "同时调用三个工具：\n1. 读取文件获取所有可用操作符：**WorldQuant_BRAIN_Operators_Documentation.md**\n2. get_datasets - 参数：region=IND, universe=TOP500, delay=1\n3. get_datafields - 参数：region=IND, universe=TOP500, delay=1\n重要规则：\n- 表达式必须严格按照operators返回的格式填写\n- 如果数据是vector类型，必须先使用vec_开头的operator\n- 表达式只能使用1-2个不同的数据字段\n- 同一字段可以多次使用\n- 使用多字段时尽量选择同数据集的字段",
+        tags: ["general"]
+    }
 ];
 
 const Gallery = {
