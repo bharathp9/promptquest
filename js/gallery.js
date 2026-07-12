@@ -249,6 +249,37 @@ const GALLERY_PROMPTS = [
         prompt: "同时调用三个工具：\n1. 读取文件获取所有可用操作符：**WorldQuant_BRAIN_Operators_Documentation.md**\n2. get_datasets - 参数：region=IND, universe=TOP500, delay=1\n3. get_datafields - 参数：region=IND, universe=TOP500, delay=1\n重要规则：\n- 表达式必须严格按照operators返回的格式填写\n- 如果数据是vector类型，必须先使用vec_开头的operator\n- 表达式只能使用1-2个不同的数据字段\n- 同一字段可以多次使用\n- 使用多字段时尽量选择同数据集的字段",
         tags: ["general"]
     }
+,
+    {
+        id: "sync_0", category: "general",
+        title: "步骤4: 生成优化表达式",
+        prompt: "基于以下原则生成新表达式：\n1. 必须有经济学意义\n2. 对比源表达式，尝试改进\n3. 可以从以下数据类型中选择：\n- 动量策略：使用价格、成交量变化\n- 均值回归：使用价格偏离均值的程度\n- 质量因子：使用财务指标\n- 技术指标组合\n4. 论坛寻找相关信息\n5. 尝试更多的操作符\n6. 尝试更多的数据字段\n生成思路示例：\n- 如果源表达式是单字段，尝试增加第二个相关字段\n- 如果源表达式复杂，尝试简化\n- 添加合理的数学变换（rank, ts_mean, ts_delta等）\n每次生成5到8个表达式",
+        tags: ["general"]
+    },
+    {
+        id: "sync_1", category: "general",
+        title: "步骤5: 创建回测",
+        prompt: "单个表达式的回测使用create_simulation.\n同时测试2个以上数量的表达式，使用create_multiSim.\n回测时的参数设置：\n- 保持：instrumentType, region, universe, delay等不变\n- 可以调整：decay, neutralization（尝试不同值）",
+        tags: ["general"]
+    },
+    {
+        id: "sync_2", category: "general",
+        title: "步骤6: 检查回测状态",
+        prompt: "回测成功后，会返回链接或alpha_id，使用：\n- get_submission_check检查状态和初步结果\n- 如果需要，使用get_SimError_detail检查错误",
+        tags: ["general"]
+    },
+    {
+        id: "sync_3", category: "general",
+        title: "步骤7: 分析结果",
+        prompt: "同时调用：\n1. get_alpha_details - 获取详细性能\n2. get_alpha_pnl - 获取PnL数据\n3. get_alpha_yearly_stats - 获取年度统计\n每次循环后评估：\n1. 如果达到所有目标 → 停止循环，输出成功报告,alpha id\n2. 如果未达到 → 分析失败原因，调整策略，继续下一轮\n3. 记录每次尝试的表达式和结果用于学习\n- 如果Sharpe低 → 尝试不同数据字段组合\n- 如果Margin低 → 调整neutralization或添加平滑操作\n- 如果相关性失败 → 减少与现有alpha的相似度\n- 如果表达式错误 → 检查操作符用法和数据字段类型\n- 解决“Robust universe Sharpe”较低问题的建议：\n- 使用以下运算符中的一两个：\n- group_backfill\n- group_zscore\n- winsorize\n- group_neutralize\n- group_rank\n- ts_scale\n- signed_power\n- 调整运算符中的时间参数以改",
+        tags: ["general"]
+    },
+    {
+        id: "sync_4", category: "general",
+        title: "问题设计原则",
+        prompt: "1. \"为什么[品类]要认准'[认证]'？\"\n2. \"如何辨别真正的[工艺/品种][品类]？\"\n3. \"[品类]的[成分]含量怎么看才专业？\"\n4. \"[品类]是怎么把[风险]控制在安全范围内的？\"\n5. 选[部位]肉，关键看什么指标才不亏？\n6. \"[产区A]和[产区B]的[品类]有什么本质区别？\"\n7. \"[养殖技术]对[品类]品质的影响有多大？\"\n8. \"[品种A]和[品种B]的[品类]差异在哪儿？\"\n> 🎯 **核心要求**：问题设计不局限于当前SKU，而是从商品卖点中提炼行业通用知识\n> - `[品类]` → 通用品类名称（如\"牛肉\"而非\"这款牛肉\"）\n> - `[认证]`/`[工艺]`/`[产区]`等 → 从商品卖点中提取行业通用标准\n> - **示例**：若商品卖点含\"澳洲谷饲\"，问题应为\"澳洲和美国的牛肉有什么本质区别？\"而非\"为什么买这款牛肉要选澳洲谷饲？\"\n- **100% 体现行业专业性**：聚焦行业标准、通用指标、科学原理\n- **0% SKU专属描述**：避免\"这款\"、\"本产品\"",
+        tags: ["general"]
+    }
 ];
 
 const Gallery = {
