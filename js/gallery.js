@@ -127,10 +127,30 @@ const GALLERY_PROMPTS = [
     }
 ];
 
+// Only well-formed prompts are shown: known category, unique id, real title,
+// a substantial prompt body, and at least one tag.
+const MIN_PROMPT_LENGTH = 80;
+function getValidPrompts(prompts) {
+    const categoryIds = new Set(GALLERY_CATEGORIES.map(c => c.id));
+    const seen = new Set();
+    return prompts.filter(p => {
+        const ok = p && typeof p.id === 'string' && !seen.has(p.id)
+            && categoryIds.has(p.category)
+            && typeof p.title === 'string' && p.title.trim().length >= 5
+            && typeof p.prompt === 'string' && p.prompt.trim().length >= MIN_PROMPT_LENGTH
+            && Array.isArray(p.tags) && p.tags.length > 0;
+        if (ok) seen.add(p.id);
+        else console.warn('Gallery: skipping invalid prompt', p && p.id);
+        return ok;
+    });
+}
+
 const Gallery = {
     currentCategory: 'all',
+    prompts: [],
 
     init() {
+        this.prompts = getValidPrompts(GALLERY_PROMPTS);
         this.renderCategories();
         this.renderPrompts();
     },
@@ -167,18 +187,18 @@ const Gallery = {
         container.innerHTML = '';
 
         const filtered = this.currentCategory === 'all'
-            ? GALLERY_PROMPTS
-            : GALLERY_PROMPTS.filter(p => p.category === this.currentCategory);
+            ? this.prompts
+            : this.prompts.filter(p => p.category === this.currentCategory);
 
         filtered.forEach(prompt => {
             const card = document.createElement('div');
             card.className = 'gallery-card';
 
-            const tags = prompt.tags.map(t => `<span class="gallery-tag">${t}</span>`).join('');
+            const tags = prompt.tags.map(t => `<span class="gallery-tag">${this.escapeHtml(t)}</span>`).join('');
 
             card.innerHTML = `
                 <div class="gallery-card-header">
-                    <h3 class="gallery-card-title">${prompt.title}</h3>
+                    <h3 class="gallery-card-title">${this.escapeHtml(prompt.title)}</h3>
                     <button class="btn btn-small btn-ghost copy-btn" data-id="${prompt.id}" title="Copy to clipboard">&#128203; Copy</button>
                 </div>
                 <div class="gallery-card-tags">${tags}</div>
@@ -192,7 +212,7 @@ const Gallery = {
         container.querySelectorAll('.copy-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 const id = e.target.dataset.id;
-                const prompt = GALLERY_PROMPTS.find(p => p.id === id);
+                const prompt = this.prompts.find(p => p.id === id);
                 if (prompt) {
                     navigator.clipboard.writeText(prompt.prompt).then(() => {
                         this.showToast('Copied to clipboard!');

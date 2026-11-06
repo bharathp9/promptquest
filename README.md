@@ -18,7 +18,7 @@ A single-page game with 20 levels across 5 zones that teaches professional promp
 
 ### Prompt Gallery
 
-A curated library of 16 real-world prompt templates across 6 categories:
+A curated library of 17 real-world prompt templates across 6 categories:
 - Business & Strategy (SWOT analysis, email tone adapter, meeting extractor, battlecard)
 - Writing & Content (blog outliner, social media adapter, tech documentation)
 - Code & Development (code review, function generator with tests, SQL builder)
